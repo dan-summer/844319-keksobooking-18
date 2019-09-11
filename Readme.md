@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Денис Можаев](https://up.htmlacademy.ru/javascript/18/user/844319).
-* Наставник: `Неизвестно`.
+* Наставник: `Денис Выхрыстюк`.
 
 ---
 
