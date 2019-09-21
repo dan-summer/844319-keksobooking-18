@@ -30,22 +30,24 @@ var getNumbersArray = function (count) {
 
   return numbers;
 };
-console.log(getNumbersArray(COUNT));
 
-var numbersArray = getNumbersArray(COUNT);
+var numbersArray = getNumbersArray(COUNT); // [1, 2, 3, 4, 5, 6, 7, 8]
 
-var getRandomIndexNumber = function (arr) {
-  return Math.floor(Math.random() * arr.length);
+var getRandomNumber = function (maxNumber) {
+  return Math.floor(Math.random() * maxNumber);
 };
 
-var getNumber = function () {
+var getNumberImg = function () {
+  var index = getRandomNumber(numbersArray.length);
+  var value = numbersArray.splice(index, 1);
 
+  return value[0];
 };
 
 var createAnnouncement = function () {
   return {
     author: {
-      avatar: AVATAR_PATH + getNumber() + AVATAR_EXTENSHION
+      avatar: AVATAR_PATH + getNumberImg() + AVATAR_EXTENSHION
     },
     offer: {
       title:
