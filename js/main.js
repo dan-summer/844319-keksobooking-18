@@ -22,7 +22,8 @@ var LOCATION_X_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var COUNT = 8;
 
-var getNumbersArray = function (count) {
+// Функция создания массива чисел
+var creatNumbersArray = function (count) {
   var numbers = [];
   for (var i = 1; i <= count; i++) {
     numbers.push(i);
@@ -31,12 +32,15 @@ var getNumbersArray = function (count) {
   return numbers;
 };
 
-var numbersArray = getNumbersArray(COUNT); // [1, 2, 3, 4, 5, 6, 7, 8]
+// [1, 2, 3, 4, 5, 6, 7, 8]
+var numbersArray = creatNumbersArray(COUNT);
 
+// Функция генерации случайного числа
 var getRandomNumber = function (maxNumber) {
   return Math.floor(Math.random() * maxNumber);
 };
 
+// Функция возвращает случайный удалённый элемент массива
 var getNumberImg = function () {
   var index = getRandomNumber(numbersArray.length);
   var value = numbersArray.splice(index, 1);
@@ -44,6 +48,7 @@ var getNumberImg = function () {
   return value[0];
 };
 
+// Функция создания объекта
 var createAnnouncement = function () {
   return {
     author: {
