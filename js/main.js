@@ -133,7 +133,7 @@ var createAnnouncement = function () {
   };
 };
 
-// Функция добавления объявления в массив
+// Функция добавления объявлений в массив
 var createAnnouncements = function (count) {
   var announcements = [];
 
