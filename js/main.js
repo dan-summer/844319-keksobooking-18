@@ -1,7 +1,7 @@
 'use strict';
 
 var AVATAR_PATH = 'img/avatars/user0';
-var AVATAR_EXTENSHION = '.png';
+var AVATAR_EXTENSION = '.png';
 var TITLES = [
   'Милый дом',
   'Уютное местечко',
@@ -50,7 +50,7 @@ activeMap.classList.remove('map--faded');
 var mapPins = document.querySelector('.map__pins');
 
 // Шаблон метки
-var pinTamplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Функция создания массива чисел
 var createNumbersArray = function (count) {
@@ -111,7 +111,7 @@ var getRandomInRange = function (min, max) {
 var createAnnouncement = function () {
   return {
     author: {
-      avatar: AVATAR_PATH + getNumberImg() + AVATAR_EXTENSHION
+      avatar: AVATAR_PATH + getNumberImg() + AVATAR_EXTENSION
     },
     offer: {
       title: getRandomArrayElement(TITLES),
@@ -146,7 +146,7 @@ var createAnnouncements = function (count) {
 
 // Функция отрисовки меток объявлений
 var renderPin = function (pin) {
-  var pinElement = pinTamplate.cloneNode(true);
+  var pinElement = pinTemplate.cloneNode(true);
 
   pinElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
   pinElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
