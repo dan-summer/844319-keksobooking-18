@@ -163,62 +163,51 @@ var renderPin = function (pin) {
 };
 
 // Добавление элементов с метками на страницу
-var fragment = document.createDocumentFragment();
+var documentfragment = document.createDocumentFragment();
 var announcements = createAnnouncements(COUNT);
 
-for (var i = 0; i < announcements.length; i++) {
-  fragment.appendChild(renderPin(announcements[i]));
+for (var j = 0; j < announcements.length; j++) {
+  documentfragment.appendChild(renderPin(announcements[j]));
 }
-mapPins.appendChild(fragment);
+mapPins.appendChild(documentfragment);
 
 /* -------------------- module3task3 (6. Личный проект: больше деталей) -------------------- */
 
 // Функция выбора типа жилья
 var getHousingType = function (type) {
-  var typeName = '';
 
   if (type === 'flat') {
-    typeName = 'Квартира';
+    return 'Квартира';
   } else if (type === 'bungalo') {
-    typeName = 'Бунгало';
+    return 'Бунгало';
   } else if (type === 'house') {
-    typeName = 'Дом';
-  } else if (type === 'palace') {
-    typeName = 'Дворец';
+    return 'Дом';
   }
 
-  return typeName;
+  return 'Дворец';
 };
 
 // Функция правильного окончания слова "Комната"
 var getRoomWordEnding = function (rooms) {
-  var roomWord = '';
 
   if (rooms === 1) {
-    roomWord = ' комната';
+    return ' комната';
   }
   if (rooms >= 2 && rooms <= 4) {
-    roomWord = ' комнаты';
-  }
-  if (rooms >= 5 && rooms <= 20) {
-    roomWord = ' комнат';
+    return ' комнаты';
   }
 
-  return roomWord;
+  return ' комнат';
 };
 
 // Функция правильного окончания слова "Гость"
 var getGuestWordEnding = function (quests) {
-  var questWord = '';
 
   if (quests === 1) {
-    questWord = ' гостя';
-  }
-  if (quests >= 2 && quests <= 20) {
-    questWord = ' гостей';
+    return ' гостя';
   }
 
-  return questWord;
+  return ' гостей';
 };
 
 // Функция создания списка удобств
@@ -254,6 +243,12 @@ var getPhotoList = function (photos) {
 // Функция отрисовки карточки объявления
 var renderCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
+  var liNodeList = cardElement.querySelectorAll('.popup__feature');
+  cardElement.querySelector('.popup__photo').remove();
+
+  for (var i = 0; i < liNodeList.length; i++) {
+    liNodeList[i].remove();
+  }
 
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
