@@ -52,6 +52,8 @@ var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селек
 var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
 var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
 var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
+var roomsCountSelector = announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
+var questsCountSelector = announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // Шаблон метки
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card'); // Шаблон карточки
 
@@ -178,7 +180,6 @@ var renderPins = function () {
 
 // Функция выбора типа жилья
 var getHousingType = function (type) {
-
   if (type === 'flat') {
     return 'Квартира';
   } else if (type === 'bungalo') {
@@ -192,7 +193,6 @@ var getHousingType = function (type) {
 
 // Функция правильного окончания слова "Комната"
 var getRoomWordEnding = function (rooms) {
-
   if (rooms === 1) {
     return ' комната';
   }
@@ -205,7 +205,6 @@ var getRoomWordEnding = function (rooms) {
 
 // Функция правильного окончания слова "Гость"
 var getGuestWordEnding = function (quests) {
-
   if (quests === 1) {
     return ' гостя';
   }
@@ -291,6 +290,7 @@ var activatePage = function () {
   map.classList.remove('map--faded');
   announcementForm.classList.remove('ad-form--disabled');
   getPinSharpEndCoordinate();
+  getInputsValidation(roomsCountSelector, questsCountSelector);
 };
 
 // Событие mousedown на главной метке
@@ -307,15 +307,36 @@ mainMapPin.addEventListener('keydown', function (evt) {
   }
 });
 
-// Функция нахождения координат центра  главной метки
+// Функция нахождения координат центра главной метки
 var getPinCenterCoordinate = function () {
   addressInput.setAttribute('value', Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT / 2));
 };
 
 getPinCenterCoordinate();
 
-// // Функция нахождения координат острого конца главной метки
+// Функция нахождения координат острого конца главной метки
 var getPinSharpEndCoordinate = function () {
   addressInput.setAttribute('value', Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT + PIN_SHARD_END_HEIGHT));
 };
 
+// var roomsCountSelector = announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
+// var questsCountSelector = announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
+
+// Функция валидации соответствия колличества комнат от колличества гостей
+var getInputsValidation = function (roomsSelector, questsSelector) {
+  if (questsSelector.value !== questsSelector.options[2].value) {
+    roomsSelector.setCustomValidity('1 комната — "для 1 гостя"');
+  } else if (questsSelector.value !== questsSelector.options[1].value || questsSelector.value !== questsSelector.options[2].value) {
+    roomsSelector.setCustomValidity('2 комнаты — "для 2 гостей" или "для 1 гостя"');
+  } else if (questsSelector.value !== questsSelector.options[0].value || questsSelector.value !== questsSelector.options[1].value || questsSelector.value !== questsSelector.options[2].value) {
+    roomsSelector.setCustomValidity('3 комнаты — "для 3 гостей", "для 2 гостей" или "для 1 гостя"');
+  } else if (questsSelector.value !== questsSelector.options[3].value) {
+    roomsSelector.setCustomValidity('100 комнат — "не для гостей"');
+  } else {
+    roomsSelector.setCustomValidity('');
+  }
+};
+
+questsCountSelector.addEventListener('change', function () {
+  getInputsValidation(roomsCountSelector, questsCountSelector);
+});
