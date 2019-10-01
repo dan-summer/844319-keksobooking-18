@@ -290,7 +290,6 @@ var activatePage = function () {
   map.classList.remove('map--faded');
   announcementForm.classList.remove('ad-form--disabled');
   getPinSharpEndCoordinate();
-  getInputsValidation(roomsCountSelector, questsCountSelector);
 };
 
 // Событие mousedown на главной метке
@@ -322,21 +321,26 @@ var getPinSharpEndCoordinate = function () {
 // var roomsCountSelector = announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
 // var questsCountSelector = announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 
-// Функция валидации соответствия колличества комнат от колличества гостей
-var getInputsValidation = function (roomsSelector, questsSelector) {
-  if (questsSelector.value !== questsSelector.options[2].value) {
-    roomsSelector.setCustomValidity('1 комната — "для 1 гостя"');
-  } else if (questsSelector.value !== questsSelector.options[1].value || questsSelector.value !== questsSelector.options[2].value) {
-    roomsSelector.setCustomValidity('2 комнаты — "для 2 гостей" или "для 1 гостя"');
-  } else if (questsSelector.value !== questsSelector.options[0].value || questsSelector.value !== questsSelector.options[1].value || questsSelector.value !== questsSelector.options[2].value) {
-    roomsSelector.setCustomValidity('3 комнаты — "для 3 гостей", "для 2 гостей" или "для 1 гостя"');
-  } else if (questsSelector.value !== questsSelector.options[3].value) {
-    roomsSelector.setCustomValidity('100 комнат — "не для гостей"');
-  } else {
-    roomsSelector.setCustomValidity('');
+roomsCountSelector.addEventListener('change', function () {
+  var roomSelectedValue = roomsCountSelector.selectedIndex;
+
+  for (var i = 0; i < questsCountSelector.options.length; i++) {
+    if (questsCountSelector.options[i].value >= roomSelectedValue) {
+      questsCountSelector.options[i].disabled = true;
+    } else {
+      questsCountSelector.options[i].disabled = false;
+    }
   }
-};
+});
 
 questsCountSelector.addEventListener('change', function () {
-  getInputsValidation(roomsCountSelector, questsCountSelector);
+  var questSelectedValue = questsCountSelector.selectedIndex;
+
+  for (var i = 0; i < roomsCountSelector.options.length; i++) {
+    if (roomsCountSelector.options[i].value < questSelectedValue) {
+      roomsCountSelector.options[i].disabled = true;
+    } else {
+      roomsCountSelector.options[i].disabled = false;
+    }
+  }
 });
