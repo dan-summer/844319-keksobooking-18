@@ -346,3 +346,16 @@ var getMatchingInputsValidation = function () {
 getMatchingInputsValidation();
 
 roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
+
+/* --------------------------- module4-task3 8. (Личный проект: подробности) ---------------------------*/
+
+mapPins.addEventListener('click', function (evt) {
+  var targetElement = evt.target.closest('button');
+  if (!targetElement) {
+    return;
+  }
+  if (!mapPins.contains('targetElement')) {
+    return;
+  }
+  renderCard();
+});
