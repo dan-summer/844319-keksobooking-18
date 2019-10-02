@@ -174,8 +174,6 @@ var renderPins = function () {
   mapPins.appendChild(fragment);
 };
 
-// renderPins();
-
 /* -------------------- module3task3 (6. Личный проект: больше деталей) -------------------- */
 
 // Функция выбора типа жилья
@@ -289,6 +287,7 @@ var enableInputTags = function (select, fieldset) {
 var activatePage = function () {
   map.classList.remove('map--faded');
   announcementForm.classList.remove('ad-form--disabled');
+  renderPins();
   getPinSharpEndCoordinate();
 };
 
