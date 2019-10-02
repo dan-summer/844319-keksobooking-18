@@ -318,29 +318,32 @@ var getPinSharpEndCoordinate = function () {
   addressInput.setAttribute('value', Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT + PIN_SHARD_END_HEIGHT));
 };
 
-// var roomsCountSelector = announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
-// var questsCountSelector = announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
+// Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
+var getMatchingInputsValidation = function () {
+  var roomsSelectedValue = parseInt(roomsCountSelector[roomsCountSelector.selectedIndex].value, 10);
+  var questsOptions = questsCountSelector.options;
 
-roomsCountSelector.addEventListener('change', function () {
-  var roomSelectedValue = roomsCountSelector.selectedIndex;
+  for (var i = 0; i < questsOptions.length; i++) {
+    var questsOptionValue = parseInt(questsCountSelector.options[i].value, 10);
 
-  for (var i = 0; i < questsCountSelector.options.length; i++) {
-    if (questsCountSelector.options[i].value >= roomSelectedValue) {
-      questsCountSelector.options[i].disabled = true;
+    if (roomsSelectedValue === 100) {
+      if (questsOptionValue !== 0) {
+        questsOptions[i].disabled = true;
+      } else {
+        questsOptions[i].disabled = false;
+        questsOptions[i].selected = true;
+      }
     } else {
-      questsCountSelector.options[i].disabled = false;
+      if (questsOptionValue > roomsSelectedValue || questsOptionValue === 0) {
+        questsOptions[i].disabled = true;
+      } else {
+        questsOptions[i].disabled = false;
+        questsOptions[i].selected = true;
+      }
     }
   }
-});
+};
 
-questsCountSelector.addEventListener('change', function () {
-  var questSelectedValue = questsCountSelector.selectedIndex;
+getMatchingInputsValidation();
 
-  for (var i = 0; i < roomsCountSelector.options.length; i++) {
-    if (roomsCountSelector.options[i].value < questSelectedValue) {
-      roomsCountSelector.options[i].disabled = true;
-    } else {
-      roomsCountSelector.options[i].disabled = false;
-    }
-  }
-});
+roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
