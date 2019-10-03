@@ -151,14 +151,17 @@ var createAnnouncements = function (count) {
   return announcements;
 };
 
+var announcements = createAnnouncements(COUNT);
+
 // Функция создания метки объявления
-var createPin = function (pin) {
+var createPin = function (pin, pinIndex) {
   var pinElement = pinTemplate.cloneNode(true);
 
   pinElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
   pinElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.title;
+  pinElement.dataset.pinIndex = pinIndex;
 
   return pinElement;
 };
@@ -166,10 +169,9 @@ var createPin = function (pin) {
 // Добавление элементов с метками на страницу
 var renderPins = function () {
   var fragment = document.createDocumentFragment();
-  var announcements = createAnnouncements(COUNT);
 
   for (var i = 0; i < announcements.length; i++) {
-    fragment.appendChild(createPin(announcements[i]));
+    fragment.appendChild(createPin(announcements[i], i));
   }
   mapPins.appendChild(fragment);
 };
@@ -232,7 +234,7 @@ var getPhotoList = function (photos) {
   return imgElementString;
 };
 
-// Функция отрисовки карточки объявления
+// Функция создания карточки объявления
 var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
 
@@ -249,15 +251,6 @@ var createCard = function (card) {
 
   return cardElement;
 };
-
-// Вставка карточки на страницу
-var renderCard = function () {
-  var announcements = createAnnouncements(COUNT);
-  var announcementCard = createCard(announcements[0]);
-  map.insertBefore(announcementCard, mapFilters);
-};
-
-// renderCard();
 
 /* --------------------------- module4-task2 8. (Личный проект: подробности) ---------------------------*/
 
@@ -349,13 +342,16 @@ roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
 
 /* --------------------------- module4-task3 8. (Личный проект: подробности) ---------------------------*/
 
+// Вставка карточки на страницу
+var renderCard = function (index) {
+  var announcementCard = createCard(announcements[index]);
+  map.insertBefore(announcementCard, mapFilters);
+};
+
 mapPins.addEventListener('click', function (evt) {
   var targetElement = evt.target.closest('button');
   if (!targetElement) {
     return;
   }
-  if (!mapPins.contains('targetElement')) {
-    return;
-  }
-  renderCard();
+  renderCard(targetElement.dataset.pinIndex);
 });
