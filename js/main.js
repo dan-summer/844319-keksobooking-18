@@ -387,10 +387,10 @@ var deleteCard = function () {
 // Событие клика по одной из доступных меток объявлений
 mapPins.addEventListener('click', function (evt) {
   var targetElement = evt.target.closest('button');
-  if (!targetElement) {
-    return;
+  // var isMapActive = map.classList.contains('map--faded');
+  if (targetElement && targetElement.dataset.pinIndex !== undefined) {
+    renderCard(targetElement.dataset.pinIndex);
   }
-  renderCard(targetElement.dataset.pinIndex);
 });
 
 // Функция получения минимального значения цены типа жилья
