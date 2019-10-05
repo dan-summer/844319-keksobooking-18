@@ -42,6 +42,7 @@ var PIN_WIDTH = 62;
 var PIN_HEIGHT = 62;
 var COUNT = 8;
 var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 var map = document.querySelector('.map'); // Карта
 var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
@@ -342,12 +343,40 @@ roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
 
 /* --------------------------- module4-task3 8. (Личный проект: подробности) ---------------------------*/
 
+// Удаление карточки по нажатию ESC
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    deleteCard();
+  }
+};
+
+// Удаление карточки по клику на крестик
+var onPopupCloseButtonClick = function () {
+  deleteCard();
+};
+
 // Вставка карточки на страницу
 var renderCard = function (index) {
   var announcementCard = createCard(announcements[index]);
+  deleteCard();
   map.insertBefore(announcementCard, mapFilters);
+  var popupButtonClose = announcementCard.querySelector('.popup__close');
+  popupButtonClose.addEventListener('click', onPopupCloseButtonClick);
+  document.addEventListener('keydown', onPopupEscPress);
 };
 
+// Функция удаления карточки из разметки
+var deleteCard = function () {
+  var cardPopup = map.querySelector('.popup');
+  if (cardPopup) {
+    var popupButtonClose = cardPopup.querySelector('.popup__close');
+    popupButtonClose.removeEventListener('click', onPopupCloseButtonClick);
+    document.removeEventListener('keydown', onPopupEscPress);
+    cardPopup.remove();
+  }
+};
+
+// Событие клика по одной из доступных меток объявлений
 mapPins.addEventListener('click', function (evt) {
   var targetElement = evt.target.closest('button');
   if (!targetElement) {
