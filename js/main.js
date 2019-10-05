@@ -53,6 +53,10 @@ var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селек
 var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
 var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
 var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
+var housingTypeSelector = announcementForm.querySelector('#type'); // Селектор выбора типа жилья
+var pricePerNightInput = announcementForm.querySelector('#price'); // Поле выбора цены за ночь
+var checkInTimeSelector = announcementForm.querySelector('#timein'); // Селектор выбора времени заезда
+var checkOutTimeSelector = announcementForm.querySelector('#timeout'); // Селектор выбора времени выезда
 var roomsCountSelector = announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
 var questsCountSelector = announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // Шаблон метки
@@ -61,6 +65,10 @@ var cardTemplate = document.querySelector('#card').content.querySelector('.map__
 var PIN_TOP = parseInt(mainMapPin.style.top, 10);
 var PIN_LEFT = parseInt(mainMapPin.style.left, 10);
 var PIN_SHARD_END_HEIGHT = 22;
+var MIN_BUNGALO_PRICE = 0;
+var MIN_FLAT_PRICE = 1000;
+var MIN_HOUSE_PRICE = 5000;
+var MIN_PALACE_PRICE = 10000;
 
 // Функция создания массива чисел
 var createNumbersArray = function (count) {
@@ -313,7 +321,7 @@ var getPinSharpEndCoordinate = function () {
 
 // Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
 var getMatchingInputsValidation = function () {
-  var roomsSelectedValue = parseInt(roomsCountSelector[roomsCountSelector.selectedIndex].value, 10);
+  var roomsSelectedValue = parseInt(roomsCountSelector.value, 10);
   var questsOptions = questsCountSelector.options;
 
   for (var i = 0; i < questsOptions.length; i++) {
@@ -338,7 +346,7 @@ var getMatchingInputsValidation = function () {
 };
 
 getMatchingInputsValidation();
-
+// Событие изменения значения селектора кол-ва комнат
 roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
 
 /* --------------------------- module4-task3 8. (Личный проект: подробности) ---------------------------*/
@@ -383,4 +391,45 @@ mapPins.addEventListener('click', function (evt) {
     return;
   }
   renderCard(targetElement.dataset.pinIndex);
+});
+
+// Функция получения минимального значения цены типа жилья
+var getHousingTypeMinPrice = function () {
+  var selectedHousingTypeValue = housingTypeSelector.value;
+
+  if (selectedHousingTypeValue === 'bungalo') {
+    pricePerNightInput.min = MIN_BUNGALO_PRICE;
+    pricePerNightInput.placeholder = MIN_BUNGALO_PRICE;
+  }
+  if (selectedHousingTypeValue === 'flat') {
+    pricePerNightInput.min = MIN_FLAT_PRICE;
+    pricePerNightInput.placeholder = MIN_FLAT_PRICE;
+  }
+  if (selectedHousingTypeValue === 'house') {
+    pricePerNightInput.min = MIN_HOUSE_PRICE;
+    pricePerNightInput.placeholder = MIN_HOUSE_PRICE;
+  }
+  if (selectedHousingTypeValue === 'palace') {
+    pricePerNightInput.min = MIN_PALACE_PRICE;
+    pricePerNightInput.placeholder = MIN_PALACE_PRICE;
+  }
+};
+
+getHousingTypeMinPrice();
+// Событие изменения значения селектора типа жилья
+housingTypeSelector.addEventListener('change', getHousingTypeMinPrice);
+
+// Функция соответствия времени заезда от времени выезда
+var getCheckingTimes = function (checkingValue) {
+  checkInTimeSelector.value = checkOutTimeSelector.value = checkingValue;
+};
+
+getCheckingTimes(checkInTimeSelector.value);
+// Событие изменения значения селектора времени заезда
+checkInTimeSelector.addEventListener('change', function (evt) {
+  getCheckingTimes(evt.target.value);
+});
+// Событие изменения значения селектора времени выезда
+checkOutTimeSelector.addEventListener('change', function (evt) {
+  getCheckingTimes(evt.target.value);
 });
