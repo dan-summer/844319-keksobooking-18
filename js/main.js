@@ -43,6 +43,13 @@ var PIN_HEIGHT = 62;
 var COUNT = 8;
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
+var PIN_SHARD_END_HEIGHT = 22;
+var MIN_HOUSING_TYPE_PRICES = {
+  bungalo: '0',
+  flat: '1000',
+  house: '5000',
+  palace: '10000'
+};
 
 var map = document.querySelector('.map'); // Карта
 var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
@@ -64,11 +71,6 @@ var cardTemplate = document.querySelector('#card').content.querySelector('.map__
 
 var PIN_TOP = parseInt(mainMapPin.style.top, 10);
 var PIN_LEFT = parseInt(mainMapPin.style.left, 10);
-var PIN_SHARD_END_HEIGHT = 22;
-var MIN_BUNGALO_PRICE = 0;
-var MIN_FLAT_PRICE = 1000;
-var MIN_HOUSE_PRICE = 5000;
-var MIN_PALACE_PRICE = 10000;
 
 // Функция создания массива чисел
 var createNumbersArray = function (count) {
@@ -393,26 +395,11 @@ mapPins.addEventListener('click', function (evt) {
   }
 });
 
-// Функция получения минимального значения цены типа жилья
 var getHousingTypeMinPrice = function () {
   var selectedHousingTypeValue = housingTypeSelector.value;
+  pricePerNightInput.min = MIN_HOUSING_TYPE_PRICES[selectedHousingTypeValue];
+  pricePerNightInput.placeholder = MIN_HOUSING_TYPE_PRICES[selectedHousingTypeValue];
 
-  if (selectedHousingTypeValue === 'bungalo') {
-    pricePerNightInput.min = MIN_BUNGALO_PRICE;
-    pricePerNightInput.placeholder = MIN_BUNGALO_PRICE;
-  }
-  if (selectedHousingTypeValue === 'flat') {
-    pricePerNightInput.min = MIN_FLAT_PRICE;
-    pricePerNightInput.placeholder = MIN_FLAT_PRICE;
-  }
-  if (selectedHousingTypeValue === 'house') {
-    pricePerNightInput.min = MIN_HOUSE_PRICE;
-    pricePerNightInput.placeholder = MIN_HOUSE_PRICE;
-  }
-  if (selectedHousingTypeValue === 'palace') {
-    pricePerNightInput.min = MIN_PALACE_PRICE;
-    pricePerNightInput.placeholder = MIN_PALACE_PRICE;
-  }
 };
 
 getHousingTypeMinPrice();
