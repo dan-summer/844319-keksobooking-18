@@ -50,6 +50,9 @@ var MIN_HOUSING_TYPE_PRICES = {
   house: '5000',
   palace: '10000'
 };
+var TITLE_INPUT_MIN_LENGTH = 30;
+var TITLE_INPUT_MAX_LENGTH = 100;
+var PER_NIGHT_INPUT_MAX_PRICE = 1000000;
 
 var map = document.querySelector('.map'); // Карта
 var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
@@ -59,6 +62,7 @@ var mapFiltersForm = mapFilters.querySelector('.map__filters'); // Форма ф
 var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селекторы формы фильтрации объявлений
 var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
 var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
+var announcementTitleInput = announcementForm.querySelector('#title'); // Поле ввода заголовка объявления
 var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
 var housingTypeSelector = announcementForm.querySelector('#type'); // Селектор выбора типа жилья
 var pricePerNightInput = announcementForm.querySelector('#price'); // Поле выбора цены за ночь
@@ -268,10 +272,10 @@ var createCard = function (card) {
 // Функция отключения полей ввода
 var disableInputTags = function (select, fieldset) {
   for (var i = 0; i < select.length; i++) {
-    select[i].setAttribute('disabled', 'disabled');
+    select[i].disabled = true;
   }
   for (i = 0; i < fieldset.length; i++) {
-    fieldset[i].setAttribute('disabled', 'disabled');
+    fieldset[i].disabled = true;
   }
 };
 
@@ -280,10 +284,10 @@ disableInputTags(filterFormSelects, announcementFormFieldsets);
 // Функция включения полей ввода
 var enableInputTags = function (select, fieldset) {
   for (var i = 0; i < select.length; i++) {
-    select[i].removeAttribute('disabled', 'disabled');
+    select[i].disabled = false;
   }
   for (i = 0; i < fieldset.length; i++) {
-    fieldset[i].removeAttribute('disabled', 'disabled');
+    fieldset[i].disabled = false;
   }
 };
 
@@ -311,14 +315,14 @@ mainMapPin.addEventListener('keydown', function (evt) {
 
 // Функция нахождения координат центра главной метки
 var getPinCenterCoordinate = function () {
-  addressInput.setAttribute('value', Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT / 2));
+  addressInput.value = Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT / 2);
 };
 
 getPinCenterCoordinate();
 
 // Функция нахождения координат острого конца главной метки
 var getPinSharpEndCoordinate = function () {
-  addressInput.setAttribute('value', Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT + PIN_SHARD_END_HEIGHT));
+  addressInput.value = Math.round(PIN_LEFT + PIN_WIDTH / 2) + ', ' + Math.round(PIN_TOP + PIN_HEIGHT + PIN_SHARD_END_HEIGHT);
 };
 
 // Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
@@ -389,12 +393,24 @@ var deleteCard = function () {
 // Событие клика по одной из доступных меток объявлений
 mapPins.addEventListener('click', function (evt) {
   var targetElement = evt.target.closest('button');
-  // var isMapActive = map.classList.contains('map--faded');
   if (targetElement && targetElement.dataset.pinIndex !== undefined) {
     renderCard(targetElement.dataset.pinIndex);
   }
 });
 
+// Валидация поля ввода "заголовок объявления"
+announcementTitleInput.minLength = TITLE_INPUT_MIN_LENGTH;
+announcementTitleInput.maxLength = TITLE_INPUT_MAX_LENGTH;
+announcementTitleInput.required = true;
+
+// Валидация поля "Адрес"
+addressInput.readOnly = true;
+
+// Валидация поля "Цена за ночь, руб"
+pricePerNightInput.max = PER_NIGHT_INPUT_MAX_PRICE;
+pricePerNightInput.required = true;
+
+// Функция получения минимальной цены типа жилья
 var getHousingTypeMinPrice = function () {
   var selectedHousingTypeValue = housingTypeSelector.value;
   pricePerNightInput.min = MIN_HOUSING_TYPE_PRICES[selectedHousingTypeValue];
