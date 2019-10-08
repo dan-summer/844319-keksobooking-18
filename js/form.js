@@ -12,13 +12,13 @@
   var TITLE_INPUT_MAX_LENGTH = 100;
   var PER_NIGHT_INPUT_MAX_PRICE = 1000000;
 
-  var announcementTitleInput = window.announcementForm.querySelector('#title'); // Поле ввода заголовка объявления
-  var housingTypeSelector = window.announcementForm.querySelector('#type'); // Селектор выбора типа жилья
-  var pricePerNightInput = window.announcementForm.querySelector('#price'); // Поле выбора цены за ночь
-  var checkInTimeSelector = window.announcementForm.querySelector('#timein'); // Селектор выбора времени заезда
-  var checkOutTimeSelector = window.announcementForm.querySelector('#timeout'); // Селектор выбора времени выезда
-  var roomsCountSelector = window.announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
-  var questsCountSelector = window.announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
+  var announcementTitleInput = window.pin.announcementForm.querySelector('#title'); // Поле ввода заголовка объявления
+  var housingTypeSelector = window.pin.announcementForm.querySelector('#type'); // Селектор выбора типа жилья
+  var pricePerNightInput = window.pin.announcementForm.querySelector('#price'); // Поле выбора цены за ночь
+  var checkInTimeSelector = window.pin.announcementForm.querySelector('#timein'); // Селектор выбора времени заезда
+  var checkOutTimeSelector = window.pin.announcementForm.querySelector('#timeout'); // Селектор выбора времени выезда
+  var roomsCountSelector = window.pin.announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
+  var questsCountSelector = window.pin.announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 
   // Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
   var getMatchingInputsValidation = function () {
@@ -56,7 +56,7 @@
   announcementTitleInput.required = true;
 
   // Валидация поля "Адрес"
-  window.addressInput.readOnly = true;
+  window.pin.addressInput.readOnly = true;
 
   // Валидация поля "Цена за ночь, руб"
   pricePerNightInput.max = PER_NIGHT_INPUT_MAX_PRICE;

@@ -61,7 +61,7 @@
   };
 
   // Функция создания карточки объявления
-  window.createCard = function (card) {
+  var createCard = function (card) {
     var cardElement = cardTemplate.cloneNode(true);
 
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -76,5 +76,9 @@
     cardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
     return cardElement;
+  };
+
+  window.card = {
+    createCard: createCard
   };
 })();

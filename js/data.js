@@ -132,6 +132,10 @@
     return announcements;
   };
 
-  window.announcements = createAnnouncements(ANNOUNCEMENTS_COUNT);
+  var announcements = createAnnouncements(ANNOUNCEMENTS_COUNT);
+
+  window.data = {
+    announcements: announcements
+  };
 })();
 

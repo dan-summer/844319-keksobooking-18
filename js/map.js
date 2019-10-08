@@ -31,20 +31,20 @@
 
   // Функция активации страницы
   var activatePage = function () {
-    window.map.classList.remove('map--faded');
-    window.announcementForm.classList.remove('ad-form--disabled');
-    window.renderPins();
-    window.getPinSharpEndCoordinate();
+    window.pin.map.classList.remove('map--faded');
+    window.pin.announcementForm.classList.remove('ad-form--disabled');
+    window.pin.renderPins();
+    window.pin.getPinSharpEndCoordinate();
   };
 
   // Событие mousedown на главной метке
-  window.mainMapPin.addEventListener('mousedown', function () {
+  window.pin.mainMapPin.addEventListener('mousedown', function () {
     activatePage();
     enableInputTags(filterFormSelects, announcementFormFieldsets);
   });
 
   // Событие нажатия Enter по главной метке
-  window.mainMapPin.addEventListener('keydown', function (evt) {
+  window.pin.mainMapPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.key.ENTER_KEYCODE) {
       activatePage();
       enableInputTags(filterFormSelects, announcementFormFieldsets);
@@ -65,9 +65,9 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.createCard(window.announcements[index]);
+    var announcementCard = window.card.createCard(window.data.announcements[index]);
     deleteCard();
-    window.map.insertBefore(announcementCard, mapFilters);
+    window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
     popupButtonClose.addEventListener('click', onPopupCloseButtonClick);
     document.addEventListener('keydown', onPopupEscPress);
@@ -75,7 +75,7 @@
 
   // Функция удаления карточки из разметки
   var deleteCard = function () {
-    var cardPopup = window.map.querySelector('.popup');
+    var cardPopup = window.pin.map.querySelector('.popup');
     if (cardPopup) {
       var popupButtonClose = cardPopup.querySelector('.popup__close');
       popupButtonClose.removeEventListener('click', onPopupCloseButtonClick);
@@ -85,7 +85,7 @@
   };
 
   // Событие клика по одной из доступных меток объявлений
-  window.mapPins.addEventListener('click', function (evt) {
+  window.pin.mapPins.addEventListener('click', function (evt) {
     var targetElement = evt.target.closest('button');
     if (targetElement && targetElement.dataset.pinIndex !== undefined) {
       renderCard(targetElement.dataset.pinIndex);
