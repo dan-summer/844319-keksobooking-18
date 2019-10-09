@@ -34,13 +34,72 @@
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     window.pin.renderPins();
-    window.pin.getPinSharpEndCoordinate();
+    // window.pin.getPinSharpEndCoordinate(window.pin.MAIN_PIN_LEFT_COORDINATE, window.pin.MAIN_PIN_TOP_COORDINATE);
   };
 
   // Событие mousedown на главной метке
-  window.pin.mainMapPin.addEventListener('mousedown', function () {
+  // window.pin.mainMapPin.addEventListener('mousedown', function () {
+  //   activatePage();
+  //   enableInputTags(filterFormSelects, announcementFormFieldsets);
+  // });
+
+  window.pin.mainMapPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
     activatePage();
     enableInputTags(filterFormSelects, announcementFormFieldsets);
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var mainPinTop = parseInt(window.pin.mainMapPin.style.top, 10);
+      var mainPinLeft = parseInt(window.pin.mainMapPin.style.left, 10);
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      window.pin.mainMapPin.style.top = window.pin.mainMapPin.offsetTop - shift.y + 'px';
+      window.pin.mainMapPin.style.left = window.pin.mainMapPin.offsetLeft - shift.x + 'px';
+      window.pin.getPinSharpEndCoordinate(mainPinLeft, mainPinTop);
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      var mainPinTop = parseInt(window.pin.mainMapPin.style.top, 10);
+      var mainPinLeft = parseInt(window.pin.mainMapPin.style.left, 10);
+
+      var shift = {
+        x: startCoords.x - upEvt.clientX,
+        y: startCoords.y - upEvt.clientY
+      };
+
+      startCoords = {
+        x: upEvt.clientX,
+        y: upEvt.clientY
+      };
+
+      window.pin.mainMapPin.style.top = window.pin.mainMapPin.offsetTop - shift.y + 'px';
+      window.pin.mainMapPin.style.left = window.pin.mainMapPin.offsetLeft - shift.x + 'px';
+      window.pin.getPinSharpEndCoordinate(mainPinLeft, mainPinTop);
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 
   // Событие нажатия Enter по главной метке
