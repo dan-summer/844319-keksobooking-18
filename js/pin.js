@@ -12,8 +12,8 @@
   var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
   var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
 
-  var MAIN_PIN_TOP_COORDINATE = parseInt(mainMapPin.style.top, 10);
-  var MAIN_PIN_LEFT_COORDINATE = parseInt(mainMapPin.style.left, 10);
+  var MAIN_PIN_START_TOP_COORD = parseInt(mainMapPin.style.top, 10);
+  var MAIN_PIN_START_LEFT_COORD = parseInt(mainMapPin.style.left, 10);
 
   // Функция создания метки объявления
   var createPin = function (pin, pinIndex) {
@@ -39,34 +39,20 @@
     mapPins.appendChild(fragment);
   };
 
-  // Функция нахождения координат центра главной метки
-  var getPinCenterCoordinate = function () {
-    addressInput.value = Math.round(MAIN_PIN_LEFT_COORDINATE + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_TOP_COORDINATE + MAIN_PIN_HEIGHT / 2);
-  };
-
-  getPinCenterCoordinate();
-
-  // Функция нахождения координат острого конца главной метки
-  // var getPinSharpEndCoordinate = function () {
-  //   addressInput.value = Math.round(MAIN_PIN_LEFT_COORDINATE + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_TOP_COORDINATE + MAIN_PIN_HEIGHT + MAIN_PIN_SHARD_END_HEIGHT);
-  // };
-
-  var getPinSharpEndCoordinate = function (pinLeft, pinTop) {
-    addressInput.value = Math.round(pinLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(pinTop + MAIN_PIN_HEIGHT + MAIN_PIN_SHARD_END_HEIGHT);
-  };
+  // Запись координат центра главной метки в поле "Адрес"
+  addressInput.value = Math.round(MAIN_PIN_START_LEFT_COORD + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_START_TOP_COORD + MAIN_PIN_HEIGHT / 2);
 
   window.pin = {
     map: map,
     mainMapPin: mainMapPin,
     mapPins: mapPins,
     renderPins: renderPins,
-    getPinSharpEndCoordinate: getPinSharpEndCoordinate,
     announcementForm: announcementForm,
     addressInput: addressInput,
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    MAIN_PIN_TOP_COORDINATE: MAIN_PIN_TOP_COORDINATE,
-    MAIN_PIN_LEFT_COORDINATE: MAIN_PIN_LEFT_COORDINATE,
+    MAIN_PIN_START_TOP_COORD: MAIN_PIN_START_TOP_COORD,
+    MAIN_PIN_START_LEFT_COORD: MAIN_PIN_START_LEFT_COORD,
     MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT
   };
 })();
