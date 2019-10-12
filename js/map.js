@@ -10,19 +10,16 @@
   var mainPinHeight = window.pin.MAIN_PIN_HEIGHT; // Высота главной метки
   var mainPinShardEndHeight = window.pin.MAIN_PIN_SHARD_END_HEIGHT; // Высота острого конца метки
   var isPageActive = false;
-
+  var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10); // Координата курсора мыши по X
+  var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10); // Координата курсора мыши по Y
+  var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
+  var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
   // Ограничение главной метки по X
   var mainPinLimitXMin = window.data.LOCATION_X_MIN - mainPinHalfWidth;
   var mainPinLimitXMax = window.data.LOCATION_X_MAX - mainPinHalfWidth;
   // Ограничение главной метки по Y
   var mainPinLimitYMin = window.data.LOCATION_Y_MIN - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
   var mainPinLimitYMax = window.data.LOCATION_Y_MAX - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
-
-  var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10);
-  var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10);
-
-  var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
-  var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
 
   // Функция отключения полей ввода
   var disableInputTags = function (select, fieldset) {
@@ -87,9 +84,6 @@
         y: moveEvt.clientY
       };
 
-      cursorCoordX = cursorCoordX - shift.x;
-      cursorCoordY = cursorCoordY - shift.y;
-
       mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
       mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
 
@@ -97,6 +91,9 @@
       mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
       mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
       mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
+
+      cursorCoordX = cursorCoordX - shift.x;
+      cursorCoordY = cursorCoordY - shift.y;
 
       if (cursorCoordX > mainPinLimitXMax) {
         mainPinCurrentX = mainPinLimitXMax;
@@ -111,7 +108,6 @@
 
       window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
       window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
-
       getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
     };
 
