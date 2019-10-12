@@ -9,6 +9,8 @@
   var mainPinHalfWidth = window.pin.MAIN_PIN_WIDTH / 2; // Ширина половины главной метки
   var mainPinHeight = window.pin.MAIN_PIN_HEIGHT; // Высота главной метки
   var mainPinShardEndHeight = window.pin.MAIN_PIN_SHARD_END_HEIGHT; // Высота острого конца метки
+  var isPageActive = false;
+
   // Ограничение главной метки по X
   var mainPinLimitXMin = window.data.LOCATION_X_MIN - mainPinHalfWidth;
   var mainPinLimitXMax = window.data.LOCATION_X_MAX - mainPinHalfWidth;
@@ -43,9 +45,12 @@
 
   // Функция активации страницы
   var activatePage = function () {
+    isPageActive = true;
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     window.pin.renderPins();
+    enableInputTags(filterFormSelects, announcementFormFieldsets);
+    getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
   };
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки
@@ -57,9 +62,9 @@
   window.pin.mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var moved = false;
-    activatePage();
-    enableInputTags(filterFormSelects, announcementFormFieldsets);
+    if (!isPageActive) {
+      activatePage();
+    }
 
     var startCoords = {
       x: evt.clientX,
@@ -69,7 +74,6 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      moved = true;
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -83,10 +87,36 @@
       mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
       mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
 
-      mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
-      mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
-      mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
-      mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
+      // mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
+      // mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
+      // mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
+      // mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
+
+      if (mainPinCurrentX < mainPinLimitXMin && startCoords.x < mainPinLimitXMin) {
+        mainPinCurrentX = mainPinLimitXMin;
+        startCoords.x = mainPinLimitXMin;
+      } else {
+        mainPinCurrentX = mainPinCurrentX;
+      }
+      if (mainPinCurrentX > mainPinLimitXMax && startCoords.x > mainPinLimitXMax) {
+        mainPinCurrentX = mainPinLimitXMax;
+        startCoords.x = mainPinLimitXMax;
+      } else {
+        mainPinCurrentX = mainPinCurrentX;
+      }
+
+      if (mainPinCurrentY < mainPinLimitYMin && startCoords.y < mainPinLimitYMin) {
+        mainPinCurrentY = mainPinLimitYMin;
+        startCoords.y = mainPinLimitYMin;
+      } else {
+        mainPinCurrentY = mainPinCurrentY;
+      }
+      if (mainPinCurrentY > mainPinLimitYMax && startCoords.y > mainPinLimitYMax) {
+        mainPinCurrentY = mainPinLimitYMax;
+        startCoords.y = mainPinLimitYMax;
+      } else {
+        mainPinCurrentY = mainPinCurrentY;
+      }
 
       window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
       window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
@@ -95,10 +125,6 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-
-      if (!moved) {
-        getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
-      }
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
@@ -112,7 +138,6 @@
   window.pin.mainMapPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.key.ENTER_KEYCODE) {
       activatePage();
-      enableInputTags(filterFormSelects, announcementFormFieldsets);
     }
   });
 
