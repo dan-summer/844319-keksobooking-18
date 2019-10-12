@@ -18,8 +18,8 @@
   var mainPinLimitYMin = window.data.LOCATION_Y_MIN - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
   var mainPinLimitYMax = window.data.LOCATION_Y_MAX - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
 
-  var cursorCoordX = window.pin.mainMapPin.style.left;
-  var cursorCoordY = window.pin.mainMapPin.style.top;
+  var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10);
+  var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10);
 
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
@@ -90,8 +90,8 @@
       cursorCoordX = cursorCoordX - shift.x;
       cursorCoordY = cursorCoordY - shift.y;
 
-      mainPinCurrentX = mainPinCurrentX - shift.x;
-      mainPinCurrentY = mainPinCurrentY - shift.y;
+      mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
+      mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
 
       mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
       mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
@@ -109,8 +109,8 @@
         mainPinCurrentY = mainPinLimitYMin;
       }
 
-      window.pin.mainMapPin.style.top = cursorCoordY + 'px';
-      window.pin.mainMapPin.style.left = cursorCoordX + 'px';
+      window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
+      window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
 
       getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
     };
