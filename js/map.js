@@ -18,6 +18,9 @@
   var mainPinLimitYMin = window.data.LOCATION_Y_MIN - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
   var mainPinLimitYMax = window.data.LOCATION_Y_MAX - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
 
+  var cursorCoordX = window.pin.mainMapPin.style.left;
+  var cursorCoordY = window.pin.mainMapPin.style.top;
+
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
 
@@ -84,42 +87,31 @@
         y: moveEvt.clientY
       };
 
-      mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
-      mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
+      cursorCoordX = cursorCoordX - shift.x;
+      cursorCoordY = cursorCoordY - shift.y;
 
-      // mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
-      // mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
-      // mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
-      // mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
+      mainPinCurrentX = mainPinCurrentX - shift.x;
+      mainPinCurrentY = mainPinCurrentY - shift.y;
 
-      if (mainPinCurrentX < mainPinLimitXMin && startCoords.x < mainPinLimitXMin) {
-        mainPinCurrentX = mainPinLimitXMin;
-        startCoords.x = mainPinLimitXMin;
-      } else {
-        mainPinCurrentX = mainPinCurrentX;
-      }
-      if (mainPinCurrentX > mainPinLimitXMax && startCoords.x > mainPinLimitXMax) {
+      mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
+      mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
+      mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
+      mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
+
+      if (cursorCoordX > mainPinLimitXMax) {
         mainPinCurrentX = mainPinLimitXMax;
-        startCoords.x = mainPinLimitXMax;
-      } else {
-        mainPinCurrentX = mainPinCurrentX;
+      } else if (cursorCoordX < mainPinLimitXMin) {
+        mainPinCurrentX = mainPinLimitXMin;
       }
-
-      if (mainPinCurrentY < mainPinLimitYMin && startCoords.y < mainPinLimitYMin) {
-        mainPinCurrentY = mainPinLimitYMin;
-        startCoords.y = mainPinLimitYMin;
-      } else {
-        mainPinCurrentY = mainPinCurrentY;
-      }
-      if (mainPinCurrentY > mainPinLimitYMax && startCoords.y > mainPinLimitYMax) {
+      if (cursorCoordY > mainPinLimitYMax) {
         mainPinCurrentY = mainPinLimitYMax;
-        startCoords.y = mainPinLimitYMax;
-      } else {
-        mainPinCurrentY = mainPinCurrentY;
+      } else if (cursorCoordY < mainPinLimitYMin) {
+        mainPinCurrentY = mainPinLimitYMin;
       }
 
-      window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
-      window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
+      window.pin.mainMapPin.style.top = cursorCoordY + 'px';
+      window.pin.mainMapPin.style.left = cursorCoordX + 'px';
+
       getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
     };
 
