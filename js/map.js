@@ -46,7 +46,10 @@
   // Функция активации страницы
   var activatePage = function () {
     isPageActive = true;
-    window.backend.load(window.data.loadData, window.pin.onLoadError);
+    window.backend.load(function (arr) {
+      window.pin.renderPins(arr);
+      window.data.pin = arr;
+    }, window.pin.onLoadError);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     // window.pin.renderPins();
@@ -139,7 +142,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.data.loadData[index]);
+    var announcementCard = window.card.createCard(window.data.pin[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
