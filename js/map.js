@@ -139,7 +139,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.data.announcements[index]);
+    var announcementCard = window.card.createCard(window.data.loadData[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
