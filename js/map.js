@@ -87,22 +87,17 @@
       mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
       mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
 
-      mainPinCurrentX = mainPinCurrentX < mainPinLimitXMin ? mainPinLimitXMin : mainPinCurrentX;
-      mainPinCurrentX = mainPinCurrentX > mainPinLimitXMax ? mainPinLimitXMax : mainPinCurrentX;
-      mainPinCurrentY = mainPinCurrentY < mainPinLimitYMin ? mainPinLimitYMin : mainPinCurrentY;
-      mainPinCurrentY = mainPinCurrentY > mainPinLimitYMax ? mainPinLimitYMax : mainPinCurrentY;
-
       cursorCoordX = cursorCoordX - shift.x;
       cursorCoordY = cursorCoordY - shift.y;
 
-      if (cursorCoordX > mainPinLimitXMax) {
+      if (mainPinCurrentX > mainPinLimitXMax || cursorCoordX > mainPinLimitXMax) {
         mainPinCurrentX = mainPinLimitXMax;
-      } else if (cursorCoordX < mainPinLimitXMin) {
+      } else if (mainPinCurrentX < mainPinLimitXMin || cursorCoordX < mainPinLimitXMin) {
         mainPinCurrentX = mainPinLimitXMin;
       }
-      if (cursorCoordY > mainPinLimitYMax) {
+      if (mainPinCurrentY > mainPinLimitYMax || cursorCoordY > mainPinLimitYMax) {
         mainPinCurrentY = mainPinLimitYMax;
-      } else if (cursorCoordY < mainPinLimitYMin) {
+      } else if (mainPinCurrentY < mainPinLimitYMin || cursorCoordY < mainPinLimitYMin) {
         mainPinCurrentY = mainPinLimitYMin;
       }
 
