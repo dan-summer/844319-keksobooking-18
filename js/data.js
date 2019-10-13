@@ -134,12 +134,17 @@
 
   var announcements = createAnnouncements(ANNOUNCEMENTS_COUNT);
 
+  var loadData = function (arr) {
+    window.pin.renderPins(arr);
+  };
+
   window.data = {
     announcements: announcements,
     LOCATION_X_MIN: LOCATION_X_MIN,
     LOCATION_X_MAX: LOCATION_X_MAX,
     LOCATION_Y_MIN: LOCATION_Y_MIN,
-    LOCATION_Y_MAX: LOCATION_Y_MAX
+    LOCATION_Y_MAX: LOCATION_Y_MAX,
+    loadData: loadData
   };
 })();
 

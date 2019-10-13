@@ -46,9 +46,10 @@
   // Функция активации страницы
   var activatePage = function () {
     isPageActive = true;
+    window.backend.load(window.data.loadData, window.pin.onLoadError);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
-    window.pin.renderPins();
+    // window.pin.renderPins();
     enableInputTags(filterFormSelects, announcementFormFieldsets);
     getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
   };
