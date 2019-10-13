@@ -2,11 +2,11 @@
 
 // Модуль работы с формой объявления
 (function () {
-  var MIN_HOUSING_TYPE_PRICES = {
-    bungalo: '0',
-    flat: '1000',
-    house: '5000',
-    palace: '10000'
+  var MinHousingTypePrice = {
+    BUNGALO: '0',
+    FLAT: '1000',
+    HOUSE: '5000',
+    PALACE: '10000'
   };
   var TITLE_INPUT_MIN_LENGTH = 30;
   var TITLE_INPUT_MAX_LENGTH = 100;
@@ -64,9 +64,9 @@
 
   // Функция получения минимальной цены типа жилья
   var getHousingTypeMinPrice = function () {
-    var selectedHousingTypeValue = housingTypeSelector.value;
-    pricePerNightInput.min = MIN_HOUSING_TYPE_PRICES[selectedHousingTypeValue];
-    pricePerNightInput.placeholder = MIN_HOUSING_TYPE_PRICES[selectedHousingTypeValue];
+    var selectedHousingTypeValue = housingTypeSelector.value.toUpperCase();
+    pricePerNightInput.min = MinHousingTypePrice[selectedHousingTypeValue];
+    pricePerNightInput.placeholder = MinHousingTypePrice[selectedHousingTypeValue];
 
   };
 
