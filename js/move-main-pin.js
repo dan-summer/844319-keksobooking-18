@@ -1,6 +1,6 @@
 'use strict';
 
-// Модуль создания объявлений
+// Модуль перемещения главной метки
 (function () {
   var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10); // Координата курсора мыши по X
   var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10); // Координата курсора мыши по Y
