@@ -2,9 +2,6 @@
 
 // Модуль работы с метками объявлений
 (function () {
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 62;
-
   var main = document.querySelector('main'); // Блок <main>
   var map = document.querySelector('.map'); // Карта
   var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
@@ -12,6 +9,8 @@
   var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
   var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
 
+  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_HEIGHT = 62;
   var MAIN_PIN_START_TOP_COORD = parseInt(mainMapPin.style.top, 10);
   var MAIN_PIN_START_LEFT_COORD = parseInt(mainMapPin.style.left, 10);
 
