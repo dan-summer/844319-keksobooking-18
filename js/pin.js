@@ -4,7 +4,6 @@
 (function () {
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 62;
-  var MAIN_PIN_SHARD_END_HEIGHT = 22;
 
   var main = document.querySelector('main'); // Блок <main>
   var map = document.querySelector('.map'); // Карта
@@ -43,8 +42,8 @@
   };
 
   var onLoadSucceessHandler = function (serverDataArr) {
-    window.pin.renderPins(serverDataArr);
-    window.data.pin = serverDataArr;
+    renderPins(serverDataArr);
+    window.pin.pinsArr = serverDataArr;
   };
 
   var onLoadErrorHandler = function (errorMessage) {
@@ -62,14 +61,10 @@
     map: map,
     mainMapPin: mainMapPin,
     mapPins: mapPins,
-    renderPins: renderPins,
     announcementForm: announcementForm,
     addressInput: addressInput,
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    MAIN_PIN_START_TOP_COORD: MAIN_PIN_START_TOP_COORD,
-    MAIN_PIN_START_LEFT_COORD: MAIN_PIN_START_LEFT_COORD,
-    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT,
     onLoadSucceessHandler: onLoadSucceessHandler,
     onLoadErrorHandler: onLoadErrorHandler
   };

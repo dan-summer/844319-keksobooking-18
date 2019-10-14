@@ -8,18 +8,22 @@
   var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
   var mainPinHalfWidth = window.pin.MAIN_PIN_WIDTH / 2; // Ширина половины главной метки
   var mainPinHeight = window.pin.MAIN_PIN_HEIGHT; // Высота главной метки
-  var mainPinShardEndHeight = window.pin.MAIN_PIN_SHARD_END_HEIGHT; // Высота острого конца метки
+  var MAIN_PIN_SHARD_END_HEIGHT = 22; // Высота острого конца метки
   var isPageActive = false;
   var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10); // Координата курсора мыши по X
   var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10); // Координата курсора мыши по Y
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
+  var LOCATION_X_MIN = 0;
+  var LOCATION_X_MAX = document.querySelector('.map__overlay').offsetWidth;
+  var LOCATION_Y_MIN = 130;
+  var LOCATION_Y_MAX = 630;
   // Ограничение главной метки по X
-  var mainPinLimitXMin = window.data.LOCATION_X_MIN - mainPinHalfWidth;
-  var mainPinLimitXMax = window.data.LOCATION_X_MAX - mainPinHalfWidth;
+  var mainPinLimitXMin = LOCATION_X_MIN - mainPinHalfWidth;
+  var mainPinLimitXMax = LOCATION_X_MAX - mainPinHalfWidth;
   // Ограничение главной метки по Y
-  var mainPinLimitYMin = window.data.LOCATION_Y_MIN - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
-  var mainPinLimitYMax = window.data.LOCATION_Y_MAX - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
+  var mainPinLimitYMin = LOCATION_Y_MIN - mainPinHeight - MAIN_PIN_SHARD_END_HEIGHT;
+  var mainPinLimitYMax = LOCATION_Y_MAX - mainPinHeight - MAIN_PIN_SHARD_END_HEIGHT;
 
   // Функция отключения полей ввода
   var disableInputTags = function (select, fieldset) {
@@ -55,7 +59,7 @@
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки
   var getPinSharpEndCoordinate = function (pinLeft, pinTop) {
-    window.pin.addressInput.value = Math.round(pinLeft + mainPinHalfWidth) + ', ' + Math.round(pinTop + mainPinHeight + mainPinShardEndHeight);
+    window.pin.addressInput.value = Math.round(pinLeft + mainPinHalfWidth) + ', ' + Math.round(pinTop + mainPinHeight + MAIN_PIN_SHARD_END_HEIGHT);
   };
 
   // Событие перемещения главной метки по карте
@@ -138,7 +142,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.data.pin[index]);
+    var announcementCard = window.card.createCard(window.pin.pinsArr[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');

@@ -15,7 +15,7 @@
       if (xhr.status === SUCCESS_REQUEST_STATUS) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + xhr.statusText);
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {

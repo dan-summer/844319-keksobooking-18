@@ -2,8 +2,6 @@
 
 // Модуль работы с карточкой объявления
 (function () {
-  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card'); // Шаблон карточки
-
   // Функция выбора типа жилья
   var getHousingType = function (type) {
     if (type === 'flat') {
@@ -62,6 +60,7 @@
 
   // Функция создания карточки объявления
   var createCard = function (card) {
+    var cardTemplate = document.querySelector('#card').content.querySelector('.map__card'); // Шаблон карточки
     var cardElement = cardTemplate.cloneNode(true);
 
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
