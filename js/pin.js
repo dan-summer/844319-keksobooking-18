@@ -31,28 +31,23 @@
   };
 
   // Добавление элементов с метками на страницу
-  var renderPins = function (serverData) {
+  var renderPins = function (serverDataArr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < serverData.length; i++) {
-      if (serverData[i].offer) {
-        fragment.appendChild(createPin(serverData[i], i));
+    for (var i = 0; i < serverDataArr.length; i++) {
+      if (serverDataArr[i].offer) {
+        fragment.appendChild(createPin(serverDataArr[i], i));
       }
     }
     mapPins.appendChild(fragment);
   };
-  // var renderPins = function () {
-  //   var fragment = document.createDocumentFragment();
 
-  //   for (var i = 0; i < window.data.announcements.length; i++) {
-  //     if (window.data.announcements[i].offer) {
-  //       fragment.appendChild(createPin(window.data.announcements[i], i));
-  //     }
-  //   }
-  //   mapPins.appendChild(fragment);
-  // };
+  var onLoadSucceessHandler = function (serverDataArr) {
+    window.pin.renderPins(serverDataArr);
+    window.data.pin = serverDataArr;
+  };
 
-  var onLoadError = function (errorMessage) {
+  var onLoadErrorHandler = function (errorMessage) {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
     var errorElement = errorTemplate.cloneNode(true);
 
@@ -75,7 +70,7 @@
     MAIN_PIN_START_TOP_COORD: MAIN_PIN_START_TOP_COORD,
     MAIN_PIN_START_LEFT_COORD: MAIN_PIN_START_LEFT_COORD,
     MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT,
-    onLoadError: onLoadError,
-    // loadData: loadData
+    onLoadSucceessHandler: onLoadSucceessHandler,
+    onLoadErrorHandler: onLoadErrorHandler
   };
 })();
