@@ -69,10 +69,10 @@
     cardElement.querySelector('.popup__type').textContent = getHousingType(card.offer.type);
     cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + getRoomWordEnding(card.offer.rooms) + ' для ' + card.offer.guests + getGuestWordEnding(card.offer.guests);
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    if (card.offer.features.length === 0) {
-      cardElement.querySelector('.popup__features').style.display = 'none';
-    } else {
+    if (card.offer.features.length) {
       cardElement.querySelector('.popup__features').innerHTML = getFeatureList(card.offer.features);
+    } else {
+      cardElement.querySelector('.popup__features').style.display = 'none';
     }
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     cardElement.querySelector('.popup__photos').innerHTML = getPhotoList(card.offer.photos);
