@@ -40,12 +40,14 @@
     mapPins.appendChild(fragment);
   };
 
-  var onLoadSucceessHandler = function (serverDataArr) {
+  // Функция обратного вызова обработчика события успешной загрузки данных с сервера
+  var onLoadSuccessHandler = function (serverDataArr) {
     renderPins(serverDataArr);
     window.pin.pinsArr = serverDataArr;
   };
 
-  var onLoadErrorHandler = function (errorMessage) {
+  // Функция обратного вызова обработчика события неуспешной загрузки данных
+  var onErrorHandler = function (errorMessage) {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
     var errorElement = errorTemplate.cloneNode(true);
 
@@ -53,8 +55,17 @@
     main.appendChild(errorElement);
   };
 
-  // Запись координат центра главной метки в поле "Адрес"
-  addressInput.value = Math.round(MAIN_PIN_START_LEFT_COORD + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_START_TOP_COORD + MAIN_PIN_HEIGHT / 2);
+  // Функция обратного вызова обработчика события успешной загрузки данных на сервер
+  var onSaveSuccessHandler = function () {
+    window.map.inActivePage();
+  };
+
+  // Функция записи координат центра главной метки в поле "Адрес"
+  var getPinCenterCoordinate = function () {
+    addressInput.value = Math.round(MAIN_PIN_START_LEFT_COORD + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_START_TOP_COORD + MAIN_PIN_HEIGHT / 2);
+  };
+
+  getPinCenterCoordinate();
 
   window.pin = {
     map: map,
@@ -64,7 +75,10 @@
     addressInput: addressInput,
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    onLoadSucceessHandler: onLoadSucceessHandler,
-    onLoadErrorHandler: onLoadErrorHandler
+    renderPins: renderPins,
+    onLoadSuccessHandler: onLoadSuccessHandler,
+    onErrorHandler: onErrorHandler,
+    onSaveSuccessHandler: onSaveSuccessHandler,
+    getPinCenterCoordinate: getPinCenterCoordinate
   };
 })();

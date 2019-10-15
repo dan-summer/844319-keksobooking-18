@@ -88,4 +88,10 @@
   checkOutTimeSelector.addEventListener('change', function (evt) {
     getCheckingTimes(evt.target.value);
   });
+
+  // Событие нажатия на кнопку "Опубликовать" в форме подачи объявления
+  window.pin.announcementForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(window.pin.announcementForm), window.pin.onSaveSuccessHandler, window.pin.onLoadErrorHandler);
+    evt.preventDefault();
+  });
 })();

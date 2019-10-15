@@ -37,11 +37,30 @@
   // Функция активации страницы
   var activatePage = function () {
     window.map.isPageActive = true;
-    window.backend.load(window.pin.onLoadSucceessHandler, window.pin.onLoadErrorHandler);
+    window.backend.load(window.pin.onLoadSuccessHandler, window.pin.onErrorHandler);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     enableInputTags(filterFormSelects, announcementFormFieldsets);
     getPinSharpEndCoordinate();
+  };
+
+  // Функция возвращения страницы в исходное состояние
+  var inActivePage = function () {
+    var pins = window.pin.mapPins.querySelectorAll('[data-pin-index]'); // Все метки, имеющие атрибут data-pin-index
+
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+
+    window.map.isPageActive = false;
+    deleteCard();
+    window.pin.map.classList.add('map--faded');
+    window.pin.announcementForm.reset();
+    window.pin.announcementForm.classList.add('ad-form--disabled');
+    disableInputTags(filterFormSelects, announcementFormFieldsets);
+    window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
+    window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
+    window.pin.getPinCenterCoordinate();
   };
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки
@@ -100,9 +119,11 @@
   window.map = {
     isPageActive: isPageActive,
     activatePage: activatePage,
+    inActivePage: inActivePage,
     getPinSharpEndCoordinate: getPinSharpEndCoordinate,
     mainPinCurrentX: mainPinCurrentX,
     mainPinCurrentY: mainPinCurrentY,
-    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT
+    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT,
+    deleteCard: deleteCard
   };
 })();
