@@ -6,20 +6,11 @@
   var mapFiltersForm = mapFilters.querySelector('.map__filters'); // Форма фильтраци объявлений
   var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селекторы формы фильтрации объявлений
   var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
-  var mainPinHalfWidth = window.pin.MAIN_PIN_WIDTH / 2; // Ширина половины главной метки
-  var mainPinHeight = window.pin.MAIN_PIN_HEIGHT; // Высота главной метки
-  var mainPinShardEndHeight = window.pin.MAIN_PIN_SHARD_END_HEIGHT; // Высота острого конца метки
   var isPageActive = false;
-  var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10); // Координата курсора мыши по X
-  var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10); // Координата курсора мыши по Y
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
-  // Ограничение главной метки по X
-  var mainPinLimitXMin = window.data.LOCATION_X_MIN - mainPinHalfWidth;
-  var mainPinLimitXMax = window.data.LOCATION_X_MAX - mainPinHalfWidth;
-  // Ограничение главной метки по Y
-  var mainPinLimitYMin = window.data.LOCATION_Y_MIN - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
-  var mainPinLimitYMax = window.data.LOCATION_Y_MAX - mainPinHeight - window.pin.MAIN_PIN_SHARD_END_HEIGHT;
+
+  var MAIN_PIN_SHARD_END_HEIGHT = 22; // Высота острого конца метки
 
   // Функция отключения полей ввода
   var disableInputTags = function (select, fieldset) {
@@ -45,77 +36,18 @@
 
   // Функция активации страницы
   var activatePage = function () {
-    isPageActive = true;
+    window.map.isPageActive = true;
+    window.backend.load(window.pin.onLoadSucceessHandler, window.pin.onLoadErrorHandler);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
-    window.pin.renderPins();
     enableInputTags(filterFormSelects, announcementFormFieldsets);
-    getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
+    getPinSharpEndCoordinate();
   };
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки
-  var getPinSharpEndCoordinate = function (pinLeft, pinTop) {
-    window.pin.addressInput.value = Math.round(pinLeft + mainPinHalfWidth) + ', ' + Math.round(pinTop + mainPinHeight + mainPinShardEndHeight);
+  var getPinSharpEndCoordinate = function () {
+    window.pin.addressInput.value = Math.round(window.map.mainPinCurrentX + window.pin.MAIN_PIN_WIDTH / 2) + ', ' + Math.round(window.map.mainPinCurrentY + window.pin.MAIN_PIN_HEIGHT + MAIN_PIN_SHARD_END_HEIGHT);
   };
-
-  // Событие перемещения главной метки по карте
-  window.pin.mainMapPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    if (!isPageActive) {
-      activatePage();
-    }
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
-      mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
-
-      cursorCoordX = cursorCoordX - shift.x;
-      cursorCoordY = cursorCoordY - shift.y;
-
-      if (mainPinCurrentX > mainPinLimitXMax || cursorCoordX > mainPinLimitXMax) {
-        mainPinCurrentX = mainPinLimitXMax;
-      } else if (mainPinCurrentX < mainPinLimitXMin || cursorCoordX < mainPinLimitXMin) {
-        mainPinCurrentX = mainPinLimitXMin;
-      }
-      if (mainPinCurrentY > mainPinLimitYMax || cursorCoordY > mainPinLimitYMax) {
-        mainPinCurrentY = mainPinLimitYMax;
-      } else if (mainPinCurrentY < mainPinLimitYMin || cursorCoordY < mainPinLimitYMin) {
-        mainPinCurrentY = mainPinLimitYMin;
-      }
-
-      window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
-      window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
-      getPinSharpEndCoordinate(mainPinCurrentX, mainPinCurrentY);
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
 
   // Событие нажатия Enter по главной метке
   window.pin.mainMapPin.addEventListener('keydown', function (evt) {
@@ -138,7 +70,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.data.announcements[index]);
+    var announcementCard = window.card.createCard(window.pin.pinsArr[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
@@ -164,4 +96,13 @@
       renderCard(targetElement.dataset.pinIndex);
     }
   });
+
+  window.map = {
+    isPageActive: isPageActive,
+    activatePage: activatePage,
+    getPinSharpEndCoordinate: getPinSharpEndCoordinate,
+    mainPinCurrentX: mainPinCurrentX,
+    mainPinCurrentY: mainPinCurrentY,
+    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT
+  };
 })();

@@ -2,8 +2,6 @@
 
 // Модуль работы с карточкой объявления
 (function () {
-  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card'); // Шаблон карточки
-
   // Функция выбора типа жилья
   var getHousingType = function (type) {
     if (type === 'flat') {
@@ -62,6 +60,7 @@
 
   // Функция создания карточки объявления
   var createCard = function (card) {
+    var cardTemplate = document.querySelector('#card').content.querySelector('.map__card'); // Шаблон карточки
     var cardElement = cardTemplate.cloneNode(true);
 
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -70,7 +69,11 @@
     cardElement.querySelector('.popup__type').textContent = getHousingType(card.offer.type);
     cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + getRoomWordEnding(card.offer.rooms) + ' для ' + card.offer.guests + getGuestWordEnding(card.offer.guests);
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    cardElement.querySelector('.popup__features').innerHTML = getFeatureList(card.offer.features);
+    if (card.offer.features.length) {
+      cardElement.querySelector('.popup__features').innerHTML = getFeatureList(card.offer.features);
+    } else {
+      cardElement.querySelector('.popup__features').style.display = 'none';
+    }
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     cardElement.querySelector('.popup__photos').innerHTML = getPhotoList(card.offer.photos);
     cardElement.querySelector('.popup__avatar').src = card.author.avatar;

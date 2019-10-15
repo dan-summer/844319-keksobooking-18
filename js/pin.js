@@ -2,16 +2,15 @@
 
 // Модуль работы с метками объявлений
 (function () {
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 62;
-  var MAIN_PIN_SHARD_END_HEIGHT = 22;
-
+  var main = document.querySelector('main'); // Блок <main>
   var map = document.querySelector('.map'); // Карта
   var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
   var mapPins = document.querySelector('.map__pins'); // Метки объявлений
   var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
   var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
 
+  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_HEIGHT = 62;
   var MAIN_PIN_START_TOP_COORD = parseInt(mainMapPin.style.top, 10);
   var MAIN_PIN_START_LEFT_COORD = parseInt(mainMapPin.style.left, 10);
 
@@ -30,13 +29,28 @@
   };
 
   // Добавление элементов с метками на страницу
-  var renderPins = function () {
+  var renderPins = function (serverDataArr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < window.data.announcements.length; i++) {
-      fragment.appendChild(createPin(window.data.announcements[i], i));
+    for (var i = 0; i < serverDataArr.length; i++) {
+      if (serverDataArr[i].offer) {
+        fragment.appendChild(createPin(serverDataArr[i], i));
+      }
     }
     mapPins.appendChild(fragment);
+  };
+
+  var onLoadSucceessHandler = function (serverDataArr) {
+    renderPins(serverDataArr);
+    window.pin.pinsArr = serverDataArr;
+  };
+
+  var onLoadErrorHandler = function (errorMessage) {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
+    var errorElement = errorTemplate.cloneNode(true);
+
+    errorElement.querySelector('.error__message').textContent = errorMessage;
+    main.appendChild(errorElement);
   };
 
   // Запись координат центра главной метки в поле "Адрес"
@@ -46,13 +60,11 @@
     map: map,
     mainMapPin: mainMapPin,
     mapPins: mapPins,
-    renderPins: renderPins,
     announcementForm: announcementForm,
     addressInput: addressInput,
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    MAIN_PIN_START_TOP_COORD: MAIN_PIN_START_TOP_COORD,
-    MAIN_PIN_START_LEFT_COORD: MAIN_PIN_START_LEFT_COORD,
-    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT
+    onLoadSucceessHandler: onLoadSucceessHandler,
+    onLoadErrorHandler: onLoadErrorHandler
   };
 })();
