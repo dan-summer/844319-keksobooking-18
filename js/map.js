@@ -37,7 +37,7 @@
   // Функция активации страницы
   var activatePage = function () {
     window.map.isPageActive = true;
-    window.backend.load(window.pin.onLoadSuccessHandler, window.pin.onLoadErrorHandler);
+    window.backend.load(window.pin.onLoadSuccessHandler, window.messageHandler.onLoadErrorHandler);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     enableInputTags(filterFormSelects, announcementFormFieldsets);
