@@ -3,7 +3,7 @@
 // Модуль работы с сервером данных
 (function () {
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data'; // адрес загрузки данных с сервера
-  var SAVE_URL = 'https://js.dump.academy/keksobooking1'; // адрес загрузки данных на сервер
+  var SAVE_URL = 'https://js.dump.academy/keksobooking'; // адрес загрузки данных на сервер
   var XHR_TIMEOUT = 10000; // Таймаут запроса = 10 сек
   var SUCCESS_REQUEST_STATUS = 200; // Статус успешного запроса
 
