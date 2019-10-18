@@ -13,11 +13,10 @@
     errorElement.querySelector('.error__message').textContent = errorMessage;
     if (errorMessage === '') {
       errorTemplate.querySelector('.error__message').textContent = errorMessage;
-      window.pin.main.appendChild(errorElement);
-      errorElement.addEventListener('click', onErrorMessageClick);
-      document.addEventListener('keydown', onErrorMessageEscPress);
     }
-
+    window.pin.main.appendChild(errorElement);
+    errorElement.addEventListener('click', onErrorMessageClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
   };
 
   //  Функция скрытия сообщения об ишибке загрузки данных по клику
