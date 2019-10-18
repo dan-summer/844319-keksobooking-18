@@ -8,6 +8,9 @@
   var mapPins = document.querySelector('.map__pins'); // Метки объявлений
   var announcementForm = document.querySelector('.ad-form'); // Форма подачи объявления
   var addressInput = announcementForm.querySelector('#address'); // Поле ввода адреса на форме подачи объявлений
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
+  var errorElement = errorTemplate.cloneNode(true);
+  var successTemplate = document.querySelector('#success').content.querySelector('.success'); // Шаблон сообщения об успешной отправки формы
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 62;
@@ -46,18 +49,73 @@
     window.pin.pinsArr = serverDataArr;
   };
 
-  // Функция обратного вызова обработчика события неуспешной загрузки данных
-  var onErrorHandler = function (errorMessage) {
-    var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
-    var errorElement = errorTemplate.cloneNode(true);
-
+  // Функция обратного вызова обработчика события неуспешной загрузки данных c сервера
+  var onLoadErrorHandler = function (errorMessage) {
     errorElement.querySelector('.error__message').textContent = errorMessage;
     main.appendChild(errorElement);
+    console.log('onLoadErrorHandler');
+    document.addEventListener('click', onErrorMessageClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
   };
 
+  //  Функция скрытия сообщения об ишибке загрузки данных по клику
+  var onErrorMessageClick = function () {
+    console.log('onErrorMessageClick');
+    removeErrorMessage();
+    document.removeEventListener('click', onErrorMessageClick);
+  };
+
+  // Функция скрытия сообщения об ошибке загрузки данных по нажатию ESC
+  var onErrorMessageEscPress = function (evt) {
+    if (evt.keyCode === window.key.ESC_KEYCODE) {
+      console.log('onErrorMessageEscPress');
+      removeErrorMessage();
+    }
+    console.log('onErrorMessageEscPress');
+    document.removeEventListener('keydown', onErrorMessageEscPress);
+  };
+
+  // Функция удаления сообщения об ошибке загрузки данных из разметки
+  var removeErrorMessage = function () {
+    if (errorElement) {
+      console.log('removeErrorMessage');
+      errorElement.remove();
+    }
+  };
+  // _________________________________________________________________________________________________________________________________________
   // Функция обратного вызова обработчика события успешной загрузки данных на сервер
-  var onSaveSuccessHandler = function () {
-    window.map.inActivePage();
+  var onSaveSuccessHandler = function (successMassage) {
+    var successElement = successTemplate.cloneNode(true);
+
+    window.map.getInitialPage();
+    successElement.querySelector('.success__message').textContent = successMassage;
+    main.appendChild(successTemplate);
+
+    document.addEventListener('click', onSuccessMessageClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+  };
+
+  //  Функция скрытия сообщения успешной отправки формы по клику
+  var onSuccessMessageClick = function () {
+    removeSuccessMessage();
+
+    document.removeEventListener('click', onSuccessMessageClick);
+  };
+
+  // Функция скрытия сообщения успешной отправки формы по нажатию ESC
+  var onSuccessMessageEscPress = function (evt) {
+    if (evt.keyCode === window.key.ESC_KEYCODE) {
+      removeSuccessMessage();
+    }
+
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
+  };
+
+  // Функция удаления сообщения успешной отправки формы из разметки
+  var removeSuccessMessage = function () {
+    if (successTemplate) {
+      successTemplate.remove();
+    }
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"
@@ -77,7 +135,7 @@
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     renderPins: renderPins,
     onLoadSuccessHandler: onLoadSuccessHandler,
-    onErrorHandler: onErrorHandler,
+    onLoadErrorHandler: onLoadErrorHandler,
     onSaveSuccessHandler: onSaveSuccessHandler,
     getPinCenterCoordinate: getPinCenterCoordinate
   };

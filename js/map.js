@@ -37,7 +37,7 @@
   // Функция активации страницы
   var activatePage = function () {
     window.map.isPageActive = true;
-    window.backend.load(window.pin.onLoadSuccessHandler, window.pin.onErrorHandler);
+    window.backend.load(window.pin.onLoadSuccessHandler, window.pin.onLoadErrorHandler);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
     enableInputTags(filterFormSelects, announcementFormFieldsets);
@@ -45,7 +45,7 @@
   };
 
   // Функция возвращения страницы в исходное состояние
-  var inActivePage = function () {
+  var getInitialPage = function () {
     var pins = window.pin.mapPins.querySelectorAll('[data-pin-index]'); // Все метки, имеющие атрибут data-pin-index
 
     for (var i = 0; i < pins.length; i++) {
@@ -119,7 +119,7 @@
   window.map = {
     isPageActive: isPageActive,
     activatePage: activatePage,
-    inActivePage: inActivePage,
+    getInitialPage: getInitialPage,
     getPinSharpEndCoordinate: getPinSharpEndCoordinate,
     mainPinCurrentX: mainPinCurrentX,
     mainPinCurrentY: mainPinCurrentY,
