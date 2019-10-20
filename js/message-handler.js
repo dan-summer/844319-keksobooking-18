@@ -46,7 +46,7 @@
   var onSaveSuccessHandler = function (successMassage) {
     window.map.getInitialPage();
     successElement.querySelector('.success__message').textContent = successMassage;
-    window.pin.main.appendChild(successTemplate);
+    window.pin.main.appendChild(successElement);
     successElement.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageEscPress);
   };
@@ -67,8 +67,8 @@
 
   // Функция удаления сообщения успешной отправки формы из разметки
   var removeSuccessMessage = function () {
-    if (successTemplate) {
-      successTemplate.remove();
+    if (successElement) {
+      successElement.remove();
     }
   };
 
