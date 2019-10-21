@@ -40,23 +40,21 @@
     mapPins.appendChild(fragment);
   };
 
-  var onLoadSucceessHandler = function (serverDataArr) {
+  // Функция обратного вызова обработчика события успешной загрузки данных с сервера
+  var onLoadSuccessHandler = function (serverDataArr) {
     renderPins(serverDataArr);
     window.pin.pinsArr = serverDataArr;
   };
 
-  var onLoadErrorHandler = function (errorMessage) {
-    var errorTemplate = document.querySelector('#error').content.querySelector('.error'); // Шаблон ошибки создания объявления
-    var errorElement = errorTemplate.cloneNode(true);
-
-    errorElement.querySelector('.error__message').textContent = errorMessage;
-    main.appendChild(errorElement);
+  // Функция записи координат центра главной метки в поле "Адрес"
+  var getPinCenterCoordinate = function () {
+    addressInput.value = Math.round(MAIN_PIN_START_LEFT_COORD + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_START_TOP_COORD + MAIN_PIN_HEIGHT / 2);
   };
 
-  // Запись координат центра главной метки в поле "Адрес"
-  addressInput.value = Math.round(MAIN_PIN_START_LEFT_COORD + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(MAIN_PIN_START_TOP_COORD + MAIN_PIN_HEIGHT / 2);
+  getPinCenterCoordinate();
 
   window.pin = {
+    main: main,
     map: map,
     mainMapPin: mainMapPin,
     mapPins: mapPins,
@@ -64,7 +62,8 @@
     addressInput: addressInput,
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    onLoadSucceessHandler: onLoadSucceessHandler,
-    onLoadErrorHandler: onLoadErrorHandler
+    renderPins: renderPins,
+    onLoadSuccessHandler: onLoadSuccessHandler,
+    getPinCenterCoordinate: getPinCenterCoordinate
   };
 })();
