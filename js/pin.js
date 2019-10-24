@@ -42,8 +42,12 @@
 
   // Функция обратного вызова обработчика события успешной загрузки данных с сервера
   var onLoadSuccessHandler = function (serverDataArr) {
-    renderPins(serverDataArr);
     window.pin.pinsArr = serverDataArr;
+    renderPins(serverDataArr);
+  };
+
+  var updatePins = function (serverDataArr) {
+    renderPins(serverDataArr);
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"
@@ -63,6 +67,7 @@
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     renderPins: renderPins,
+    updatePins: updatePins,
     onLoadSuccessHandler: onLoadSuccessHandler,
     getPinCenterCoordinate: getPinCenterCoordinate
   };

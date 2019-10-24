@@ -55,6 +55,7 @@
     window.map.isPageActive = false;
     deleteCard();
     window.pin.map.classList.add('map--faded');
+    mapFiltersForm.reset();
     window.pin.announcementForm.reset();
     window.pin.announcementForm.classList.add('ad-form--disabled');
     disableInputTags(filterFormSelects, announcementFormFieldsets);
@@ -117,6 +118,7 @@
   });
 
   window.map = {
+    mapFiltersForm: mapFiltersForm,
     isPageActive: isPageActive,
     activatePage: activatePage,
     getInitialPage: getInitialPage,
