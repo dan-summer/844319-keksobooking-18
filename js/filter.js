@@ -4,8 +4,8 @@
 (function () {
   var filterHousingTypeSelector = window.map.mapFiltersForm.querySelector('#housing-type'); // Селектор выбора типа жилья в форме фильтрации объявлений
 
-  var getFilterAnnouncements = function (serverData) {
-    return serverData.filter(function (announcement) {
+  var getFilterAnnouncements = function () {
+    return window.pin.serverPins.filter(function (announcement) {
 
       return filterHousingTypeSelector.value === 'any' ? true : announcement.offer.type === filterHousingTypeSelector.value;
     });

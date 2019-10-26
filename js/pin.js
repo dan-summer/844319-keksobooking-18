@@ -42,10 +42,10 @@
 
   // Функция обратного вызова обработчика события успешной загрузки данных с сервера
   var onLoadSuccessHandler = function (serverDataArr) {
-    window.pin.pinsArr = serverDataArr;
-    renderPins(serverDataArr);
-    window.pin.filterAnnouncements = window.filter.getFilterAnnouncements(window.pin.pinsArr);
+    window.pin.serverPins = serverDataArr;
+    window.pin.filterAnnouncements = window.filter.getFilterAnnouncements();
     window.pin.filteredPins = window.filter.filterAnnouncements;
+    renderPins(window.pin.filteredPins);
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"
