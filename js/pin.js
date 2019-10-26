@@ -32,7 +32,7 @@
   var renderPins = function (serverDataArr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < serverDataArr.length; i++) {
+    for (var i = 0; i < serverDataArr.slice(0, 5).length; i++) {
       if (serverDataArr[i].offer) {
         fragment.appendChild(createPin(serverDataArr[i], i));
       }
@@ -44,10 +44,8 @@
   var onLoadSuccessHandler = function (serverDataArr) {
     window.pin.pinsArr = serverDataArr;
     renderPins(serverDataArr);
-  };
-
-  var updatePins = function (serverDataArr) {
-    renderPins(serverDataArr);
+    window.pin.filterAnnouncements = window.filter.getFilterAnnouncements(window.pin.pinsArr);
+    window.pin.filteredPins = window.filter.filterAnnouncements;
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"
@@ -67,7 +65,6 @@
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     renderPins: renderPins,
-    updatePins: updatePins,
     onLoadSuccessHandler: onLoadSuccessHandler,
     getPinCenterCoordinate: getPinCenterCoordinate
   };
