@@ -43,8 +43,7 @@
   // Функция обратного вызова обработчика события успешной загрузки данных с сервера
   var onLoadSuccessHandler = function (serverDataArr) {
     window.pin.serverPins = serverDataArr;
-    window.pin.filterAnnouncements = window.filter.getFilterAnnouncements();
-    window.pin.filteredPins = window.filter.filterAnnouncements;
+    window.pin.filteredPins = window.filter.getFilterAnnouncements();
     renderPins(window.pin.filteredPins);
   };
 

@@ -94,7 +94,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.pin.pinsArr[index]);
+    var announcementCard = window.card.createCard(window.pin.filteredPins[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
@@ -125,7 +125,7 @@
   mapFiltersForm.addEventListener('change', function () {
     deleteCard();
     deletePins();
-    window.pin.renderPins(window.pin.filteredPins);
+    window.pin.renderPins(window.filter.getFilterAnnouncements(window.pin.filteredPins));
   });
 
   window.map = {
