@@ -19,6 +19,7 @@
   var checkOutTimeSelector = window.pin.announcementForm.querySelector('#timeout'); // Селектор выбора времени выезда
   var roomsCountSelector = window.pin.announcementForm.querySelector('#room_number'); // Селектор выбора колличества комнат
   var questsCountSelector = window.pin.announcementForm.querySelector('#capacity'); // Селектор выбора колличества гостей
+  var resetButton = window.pin.announcementForm.querySelector('.ad-form__reset'); // Кнопка сброс формы объявления
 
   // Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
   var getMatchingInputsValidation = function () {
@@ -91,7 +92,12 @@
 
   // Событие нажатия на кнопку "Опубликовать" в форме подачи объявления
   window.pin.announcementForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(window.pin.announcementForm), window.messageHandler.onSaveSuccessHandler, window.messageHandler.onLoadErrorHandler);
     evt.preventDefault();
+    window.backend.save(new FormData(window.pin.announcementForm), window.messageHandler.onSaveSuccessHandler, window.messageHandler.onLoadErrorHandler);
+  });
+
+  // Событие нажатия на кнопку "Очистить" в форме подачи объявления
+  resetButton.addEventListener('click', function () {
+    window.map.getInitialPage();
   });
 })();

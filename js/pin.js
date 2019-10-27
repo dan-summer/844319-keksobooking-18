@@ -32,7 +32,7 @@
   var renderPins = function (serverDataArr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < serverDataArr.length; i++) {
+    for (var i = 0; i < serverDataArr.slice(0, 5).length; i++) {
       if (serverDataArr[i].offer) {
         fragment.appendChild(createPin(serverDataArr[i], i));
       }
@@ -42,8 +42,8 @@
 
   // Функция обратного вызова обработчика события успешной загрузки данных с сервера
   var onLoadSuccessHandler = function (serverDataArr) {
-    renderPins(serverDataArr);
-    window.pin.pinsArr = serverDataArr;
+    window.pin.serverPins = serverDataArr;
+    renderPins(window.filter.getFilterAnnouncements());
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"

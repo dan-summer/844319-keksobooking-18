@@ -46,21 +46,26 @@
 
   // Функция возвращения страницы в исходное состояние
   var getInitialPage = function () {
-    var pins = window.pin.mapPins.querySelectorAll('[data-pin-index]'); // Все метки, имеющие атрибут data-pin-index
-
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
-    }
-
     window.map.isPageActive = false;
     deleteCard();
+    deletePins();
     window.pin.map.classList.add('map--faded');
+    mapFiltersForm.reset();
     window.pin.announcementForm.reset();
     window.pin.announcementForm.classList.add('ad-form--disabled');
     disableInputTags(filterFormSelects, announcementFormFieldsets);
     window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
     window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
     window.pin.getPinCenterCoordinate();
+  };
+
+  // Функция удалени меток из разметки
+  var deletePins = function () {
+    var pins = window.pin.mapPins.querySelectorAll('[data-pin-index]'); // Все метки, имеющие атрибут data-pin-index
+
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
   };
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки
@@ -89,7 +94,7 @@
 
   // Вставка карточки на страницу
   var renderCard = function (index) {
-    var announcementCard = window.card.createCard(window.pin.pinsArr[index]);
+    var announcementCard = window.card.createCard(window.pin.filteredPins[index]);
     deleteCard();
     window.pin.map.insertBefore(announcementCard, mapFilters);
     var popupButtonClose = announcementCard.querySelector('.popup__close');
@@ -116,14 +121,21 @@
     }
   });
 
+  // Обработчик изменения формы фильтрации объявлений
+  mapFiltersForm.addEventListener('change', function () {
+    deleteCard();
+    deletePins();
+    window.pin.renderPins(window.filter.getFilterAnnouncements());
+  });
+
   window.map = {
+    mapFiltersForm: mapFiltersForm,
     isPageActive: isPageActive,
     activatePage: activatePage,
     getInitialPage: getInitialPage,
     getPinSharpEndCoordinate: getPinSharpEndCoordinate,
     mainPinCurrentX: mainPinCurrentX,
     mainPinCurrentY: mainPinCurrentY,
-    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT,
-    deleteCard: deleteCard
+    MAIN_PIN_SHARD_END_HEIGHT: MAIN_PIN_SHARD_END_HEIGHT
   };
 })();
