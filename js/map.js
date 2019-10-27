@@ -125,7 +125,7 @@
   mapFiltersForm.addEventListener('change', function () {
     deleteCard();
     deletePins();
-    window.pin.renderPins(window.filter.getFilterAnnouncements(window.pin.filteredPins));
+    window.pin.renderPins(window.filter.getFilterAnnouncements());
   });
 
   window.map = {
