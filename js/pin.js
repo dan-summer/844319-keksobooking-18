@@ -44,6 +44,8 @@
   var onLoadSuccessHandler = function (serverDataArr) {
     window.pin.serverPins = serverDataArr;
     renderPins(window.filter.getFilterAnnouncements());
+    window.map.enableInputTags(window.map.filterFormSelects);
+    window.map.enableInputTags(window.map.filterFormsFieldsets);
   };
 
   // Функция записи координат центра главной метки в поле "Адрес"
