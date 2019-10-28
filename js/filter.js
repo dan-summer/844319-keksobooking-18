@@ -36,7 +36,7 @@
 
   // Функция филтрации колл-ва гостей
   var getHousingQuestsCount = function (announcement) {
-    return filterHousingQuestsSelector.value === 'any' ? true : announcement.offer.quests === parseInt(filterHousingQuestsSelector.value, 10);
+    return filterHousingQuestsSelector.value === 'any' ? true : announcement.offer.guests === parseInt(filterHousingQuestsSelector.value, 10);
   };
 
   // Функция фильтрации объявлений
