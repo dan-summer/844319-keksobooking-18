@@ -2,6 +2,8 @@
 
 // Модуль работы с метками объявлений
 (function () {
+  var PINS_COUNT = 5;
+
   var main = document.querySelector('main'); // Блок <main>
   var map = document.querySelector('.map'); // Карта
   var mainMapPin = map.querySelector('.map__pin--main'); // Главная метка
@@ -32,7 +34,7 @@
   var renderPins = function (serverDataArr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < serverDataArr.slice(0, 5).length; i++) {
+    for (var i = 0; i < serverDataArr.slice(0, PINS_COUNT).length; i++) {
       if (serverDataArr[i].offer) {
         fragment.appendChild(createPin(serverDataArr[i], i));
       }
