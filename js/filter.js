@@ -29,21 +29,32 @@
     return true;
   };
 
-  // Функция филтрации колл-ва комнат
+  // Функция фильтрации кол-ва комнат
   var getHousingRoomsCount = function (announcement) {
     return filterHousingRoomsSelector.value === 'any' ? true : announcement.offer.rooms === parseInt(filterHousingRoomsSelector.value, 10);
   };
 
-  // Функция филтрации колл-ва гостей
+  // Функция фильтрации кол-ва гостей
   var getHousingQuestsCount = function (announcement) {
     return filterHousingQuestsSelector.value === 'any' ? true : announcement.offer.guests === parseInt(filterHousingQuestsSelector.value, 10);
+  };
+
+  // Функция фильтрации удобств
+  var getHousingFeatures = function (announcement) {
+    return Array.from(filterHousingFeaturesChecboxes).filter(function (filterAnnouncement) {
+      return filterAnnouncement.checked;
+    }).map(function (filterAnnouncement) {
+      return filterAnnouncement.value;
+    }).every(function (announcementFeature) {
+      return announcement.offer.features.includes(announcementFeature);
+    });
   };
 
   // Функция фильтрации объявлений
   var getFilterAnnouncements = function () {
     var filteredPins = window.pin.serverPins.filter(function (announcement) {
 
-      return getHousingType(announcement) && getHousingPrice(announcement) && getHousingRoomsCount(announcement) && getHousingQuestsCount(announcement);
+      return getHousingType(announcement) && getHousingPrice(announcement) && getHousingRoomsCount(announcement) && getHousingQuestsCount(announcement) && getHousingFeatures(announcement);
     });
 
     window.pin.filteredPins = filteredPins;
