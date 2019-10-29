@@ -5,32 +5,34 @@
   var mapFilters = document.querySelector('.map__filters-container'); // Блок фильтрации объявлений
   var mapFiltersForm = mapFilters.querySelector('.map__filters'); // Форма фильтраци объявлений
   var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селекторы формы фильтрации объявлений
-  var announcementFormFieldsets = document.querySelectorAll('fieldset'); // Блоки границ у формы подачи объявлений
-  var isPageActive = false;
+  var filterFormsFieldsets = mapFiltersForm.querySelectorAll('fieldset'); // Блок с кнопками удобств формы фильтрации объявлений
+  var announcementFormFieldsets = window.pin.announcementForm.querySelectorAll('fieldset'); // Блок с кнопками удоств формы подачи объявлений
+  var isPageActive = false; // Флаг активной страницы
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
 
   var MAIN_PIN_SHARD_END_HEIGHT = 22; // Высота острого конца метки
 
   // Функция отключения полей ввода
-  var disableInputTags = function (select, fieldset) {
-    for (var i = 0; i < select.length; i++) {
-      select[i].disabled = true;
-    }
-    for (i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = true;
+  var disableInputTags = function (inputTag) {
+    for (var i = 0; i < inputTag.length; i++) {
+      inputTag[i].disabled = true;
     }
   };
 
-  disableInputTags(filterFormSelects, announcementFormFieldsets);
+  // Фунцкия отключения всех полей ввода в формах
+  var disableFormsInputs = function () {
+    disableInputTags(filterFormSelects);
+    disableInputTags(filterFormsFieldsets);
+    disableInputTags(announcementFormFieldsets);
+  };
+
+  disableFormsInputs();
 
   // Функция включения полей ввода
-  var enableInputTags = function (select, fieldset) {
-    for (var i = 0; i < select.length; i++) {
-      select[i].disabled = false;
-    }
-    for (i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = false;
+  var enableInputTags = function (inputTag) {
+    for (var i = 0; i < inputTag.length; i++) {
+      inputTag[i].disabled = false;
     }
   };
 
@@ -40,7 +42,7 @@
     window.backend.load(window.pin.onLoadSuccessHandler, window.messageHandler.onLoadErrorHandler);
     window.pin.map.classList.remove('map--faded');
     window.pin.announcementForm.classList.remove('ad-form--disabled');
-    enableInputTags(filterFormSelects, announcementFormFieldsets);
+    enableInputTags(announcementFormFieldsets);
     getPinSharpEndCoordinate();
   };
 
@@ -53,7 +55,7 @@
     mapFiltersForm.reset();
     window.pin.announcementForm.reset();
     window.pin.announcementForm.classList.add('ad-form--disabled');
-    disableInputTags(filterFormSelects, announcementFormFieldsets);
+    disableFormsInputs();
     window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
     window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
     window.pin.getPinCenterCoordinate();
@@ -121,16 +123,24 @@
     }
   });
 
+  // Функция обработки события изменения формы фильтрации объявлений
+  var onFiltersFormChange = window.debounceElimination.debounce(function () {
+    window.pin.renderPins(window.filter.getFilterAnnouncements());
+  });
+
   // Обработчик изменения формы фильтрации объявлений
   mapFiltersForm.addEventListener('change', function () {
     deleteCard();
     deletePins();
-    window.pin.renderPins(window.filter.getFilterAnnouncements());
+    onFiltersFormChange();
   });
 
   window.map = {
     mapFiltersForm: mapFiltersForm,
     isPageActive: isPageActive,
+    enableInputTags: enableInputTags,
+    filterFormSelects: filterFormSelects,
+    filterFormsFieldsets: filterFormsFieldsets,
     activatePage: activatePage,
     getInitialPage: getInitialPage,
     getPinSharpEndCoordinate: getPinSharpEndCoordinate,
