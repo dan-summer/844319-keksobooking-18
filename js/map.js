@@ -20,9 +20,14 @@
     }
   };
 
-  disableInputTags(filterFormSelects);
-  disableInputTags(filterFormsFieldsets);
-  disableInputTags(announcementFormFieldsets);
+  // Фунцкия отключения всех полей ввода в формах
+  var disableFormsInputs = function () {
+    disableInputTags(filterFormSelects);
+    disableInputTags(filterFormsFieldsets);
+    disableInputTags(announcementFormFieldsets);
+  };
+
+  disableFormsInputs();
 
   // Функция включения полей ввода
   var enableInputTags = function (inputTag) {
@@ -50,8 +55,7 @@
     mapFiltersForm.reset();
     window.pin.announcementForm.reset();
     window.pin.announcementForm.classList.add('ad-form--disabled');
-    disableInputTags(filterFormSelects);
-    disableInputTags(announcementFormFieldsets);
+    disableFormsInputs();
     window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
     window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
     window.pin.getPinCenterCoordinate();
