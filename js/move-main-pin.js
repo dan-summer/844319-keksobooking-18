@@ -2,9 +2,6 @@
 
 // Модуль перемещения главной метки
 (function () {
-  var cursorCoordX = parseInt(window.pin.mainMapPin.style.left, 10); // Координата курсора мыши по X
-  var cursorCoordY = parseInt(window.pin.mainMapPin.style.top, 10); // Координата курсора мыши по Y
-
   var MAIN_PIN_LOCATION_X_MIN = 0;
   var MAIN_PIN_LOCATION_X_MAX = document.querySelector('.map__overlay').offsetWidth;
   var MAIN_PIN_LOCATION_Y_MIN = 130;
@@ -16,6 +13,12 @@
   // Ограничение главной метки по Y
   var mainPinLimitYMin = MAIN_PIN_LOCATION_Y_MIN - window.pin.MAIN_PIN_HEIGHT - window.map.MAIN_PIN_SHARD_END_HEIGHT;
   var mainPinLimitYMax = MAIN_PIN_LOCATION_Y_MAX - window.pin.MAIN_PIN_HEIGHT - window.map.MAIN_PIN_SHARD_END_HEIGHT;
+
+  // Координаты курсора мыши
+  var cursorCoords = {
+    x: parseInt(window.pin.mainMapPin.style.left, 10),
+    y: parseInt(window.pin.mainMapPin.style.top, 10)
+  };
 
   // Событие перемещения главной метки по карте
   window.pin.mainMapPin.addEventListener('mousedown', function (evt) {
@@ -46,17 +49,17 @@
       window.map.mainPinCurrentX = window.pin.mainMapPin.offsetLeft - shift.x;
       window.map.mainPinCurrentY = window.pin.mainMapPin.offsetTop - shift.y;
 
-      cursorCoordX = cursorCoordX - shift.x;
-      cursorCoordY = cursorCoordY - shift.y;
+      cursorCoords.x = cursorCoords.x - shift.x;
+      cursorCoords.y = cursorCoords.y - shift.y;
 
-      if (window.map.mainPinCurrentX > mainPinLimitXMax || cursorCoordX > mainPinLimitXMax) {
+      if (window.map.mainPinCurrentX > mainPinLimitXMax || cursorCoords.x > mainPinLimitXMax) {
         window.map.mainPinCurrentX = mainPinLimitXMax;
-      } else if (window.map.mainPinCurrentX < mainPinLimitXMin || cursorCoordX < mainPinLimitXMin) {
+      } else if (window.map.mainPinCurrentX < mainPinLimitXMin || cursorCoords.x < mainPinLimitXMin) {
         window.map.mainPinCurrentX = mainPinLimitXMin;
       }
-      if (window.map.mainPinCurrentY > mainPinLimitYMax || cursorCoordY > mainPinLimitYMax) {
+      if (window.map.mainPinCurrentY > mainPinLimitYMax || cursorCoords.y > mainPinLimitYMax) {
         window.map.mainPinCurrentY = mainPinLimitYMax;
-      } else if (window.map.mainPinCurrentY < mainPinLimitYMin || cursorCoordY < mainPinLimitYMin) {
+      } else if (window.map.mainPinCurrentY < mainPinLimitYMin || cursorCoords.y < mainPinLimitYMin) {
         window.map.mainPinCurrentY = mainPinLimitYMin;
       }
 

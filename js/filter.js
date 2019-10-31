@@ -2,14 +2,14 @@
 
 // Модуль фильтрации объявлений
 (function () {
+  var MIN_PRICE = 10000;
+  var MAX_PRICE = 50000;
+
   var filterHousingTypeSelector = window.map.mapFiltersForm.querySelector('#housing-type'); // Селектор типа жилья
   var filterHousingPriceSelector = window.map.mapFiltersForm.querySelector('#housing-price'); // Селектор цены жилья
   var filterHousingRoomsSelector = window.map.mapFiltersForm.querySelector('#housing-rooms'); // Селектор колл-ва комнат
   var filterHousingQuestsSelector = window.map.mapFiltersForm.querySelector('#housing-guests'); // Селектор колл-ва гостей
   var filterHousingFeaturesChecboxes = window.map.mapFiltersForm.querySelectorAll('input[type=checkbox]'); // Кнопки выбора удобств
-
-  var MIN_PRICE = 10000;
-  var MAX_PRICE = 50000;
 
   // Функция фильтрации типа жилья
   var getHousingType = function (announcement) {

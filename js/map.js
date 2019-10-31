@@ -2,6 +2,8 @@
 
 // Модуль работы с картой
 (function () {
+  var MAIN_PIN_SHARD_END_HEIGHT = 22; // Высота острого конца метки
+
   var mapFilters = document.querySelector('.map__filters-container'); // Блок фильтрации объявлений
   var mapFiltersForm = mapFilters.querySelector('.map__filters'); // Форма фильтраци объявлений
   var filterFormSelects = mapFiltersForm.querySelectorAll('select'); // Селекторы формы фильтрации объявлений
@@ -11,13 +13,11 @@
   var mainPinCurrentX = window.pin.mainMapPin.offsetLeft; // Текущее положение главной метки по X
   var mainPinCurrentY = window.pin.mainMapPin.offsetTop; // Текущее положение главной метки по Y
 
-  var MAIN_PIN_SHARD_END_HEIGHT = 22; // Высота острого конца метки
-
   // Функция отключения полей ввода
-  var disableInputTags = function (inputTag) {
-    for (var i = 0; i < inputTag.length; i++) {
-      inputTag[i].disabled = true;
-    }
+  var disableInputTags = function (inputTags) {
+    inputTags.forEach(function (inputTag) {
+      inputTag.disabled = true;
+    });
   };
 
   // Фунцкия отключения всех полей ввода в формах
@@ -30,10 +30,10 @@
   disableFormsInputs();
 
   // Функция включения полей ввода
-  var enableInputTags = function (inputTag) {
-    for (var i = 0; i < inputTag.length; i++) {
-      inputTag[i].disabled = false;
-    }
+  var enableInputTags = function (inputTags) {
+    inputTags.forEach(function (inputTag) {
+      inputTag.disabled = false;
+    });
   };
 
   // Функция активации страницы
@@ -66,9 +66,9 @@
   var deletePins = function () {
     var pins = window.pin.mapPins.querySelectorAll('[data-pin-index]'); // Все метки, имеющие атрибут data-pin-index
 
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
-    }
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
   };
 
   // Функция записи в поле "Адрес" коордитнат острого конца главной метки

@@ -55,9 +55,9 @@
   var deleteImages = function () {
     var photoPreview = housingPhotoPreview.querySelectorAll('img');
 
-    for (var i = 0; i < photoPreview.length; i++) {
-      photoPreview[i].remove();
-    }
+    photoPreview.forEach(function (photo) {
+      photo.remove();
+    });
 
     avatarPreview.src = 'img/avatars/default.png';
   };
