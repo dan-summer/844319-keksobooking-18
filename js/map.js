@@ -59,6 +59,7 @@
     window.pin.mainMapPin.style.left = mainPinCurrentX + 'px';
     window.pin.mainMapPin.style.top = mainPinCurrentY + 'px';
     window.pin.getPinCenterCoordinate();
+    window.uploadImages.deleteImages();
   };
 
   // Функция удалени меток из разметки
