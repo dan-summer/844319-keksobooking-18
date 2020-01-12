@@ -29,20 +29,17 @@
 
   // Функция правильного окончания слова "Гость"
   var getGuestWordEnding = function (quests) {
-    if (quests === 1) {
-      return ' гостя';
-    }
 
-    return ' гостей';
+    return quests === 1 ? ' гостя' : ' гостей';
   };
 
   // Функция создания списка удобств
   var getFeatureList = function (features) {
     var liElementString = '';
 
-    for (var i = 0; i < features.length; i++) {
-      liElementString += '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
-    }
+    features.forEach(function (feature) {
+      liElementString += '<li class="popup__feature popup__feature--' + feature + '"></li>';
+    });
 
     return liElementString;
   };
@@ -51,9 +48,9 @@
   var getPhotoList = function (photos) {
     var imgElementString = '';
 
-    for (var i = 0; i < photos.length; i++) {
-      imgElementString += '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
-    }
+    photos.forEach(function (photo) {
+      imgElementString += '<img src="' + photo + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    });
 
     return imgElementString;
   };

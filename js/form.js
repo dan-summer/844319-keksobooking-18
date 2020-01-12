@@ -2,15 +2,16 @@
 
 // Модуль работы с формой объявления
 (function () {
+  var TITLE_INPUT_MIN_LENGTH = 30;
+  var TITLE_INPUT_MAX_LENGTH = 100;
+  var PER_NIGHT_INPUT_MAX_PRICE = 1000000;
+
   var MinHousingTypePrice = {
     BUNGALO: '0',
     FLAT: '1000',
     HOUSE: '5000',
     PALACE: '10000'
   };
-  var TITLE_INPUT_MIN_LENGTH = 30;
-  var TITLE_INPUT_MAX_LENGTH = 100;
-  var PER_NIGHT_INPUT_MAX_PRICE = 1000000;
 
   var announcementTitleInput = window.pin.announcementForm.querySelector('#title'); // Поле ввода заголовка объявления
   var housingTypeSelector = window.pin.announcementForm.querySelector('#type'); // Селектор выбора типа жилья
@@ -22,7 +23,7 @@
   var resetButton = window.pin.announcementForm.querySelector('.ad-form__reset'); // Кнопка сброс формы объявления
 
   // Функция валидации соответсвтия колл-ва комнат от колл-ва гостей
-  var getMatchingInputsValidation = function () {
+  var onRoomsCountChange = function () {
     var roomsSelectedValue = parseInt(roomsCountSelector.value, 10);
     var questsOptions = questsCountSelector.options;
 
@@ -47,9 +48,9 @@
     }
   };
 
-  getMatchingInputsValidation();
+  onRoomsCountChange();
   // Событие изменения значения селектора кол-ва комнат
-  roomsCountSelector.addEventListener('change', getMatchingInputsValidation);
+  roomsCountSelector.addEventListener('change', onRoomsCountChange);
 
   // Валидация поля ввода "заголовок объявления"
   announcementTitleInput.minLength = TITLE_INPUT_MIN_LENGTH;
@@ -64,16 +65,16 @@
   pricePerNightInput.required = true;
 
   // Функция получения минимальной цены типа жилья
-  var getHousingTypeMinPrice = function () {
+  var onHousingTypeChange = function () {
     var selectedHousingTypeValue = housingTypeSelector.value.toUpperCase();
     pricePerNightInput.min = MinHousingTypePrice[selectedHousingTypeValue];
     pricePerNightInput.placeholder = MinHousingTypePrice[selectedHousingTypeValue];
 
   };
 
-  getHousingTypeMinPrice();
+  onHousingTypeChange();
   // Событие изменения значения селектора типа жилья
-  housingTypeSelector.addEventListener('change', getHousingTypeMinPrice);
+  housingTypeSelector.addEventListener('change', onHousingTypeChange);
 
   // Функция соответствия времени заезда от времени выезда
   var getCheckingTimes = function (checkingValue) {
