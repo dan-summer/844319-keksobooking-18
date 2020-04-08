@@ -3,6 +3,8 @@
 * Студент: [Денис Можаев](https://up.htmlacademy.ru/javascript/18/user/844319).
 * Наставник: `Денис Выхрыстюк`.
 
+
+[keksobuking-project]: https://up.htmlacademy.ru/static/img/intensive/javascript/17/keksobooking.jpg
 ---
 
 <a href="https://htmlacademy.ru/intensive/javascript"><img align="left" width="50" height="50" alt="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/javascript/logo-for-github-2.png"></a>
